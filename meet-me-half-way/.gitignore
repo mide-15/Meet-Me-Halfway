@@ -20,6 +20,9 @@ venv
 .env.production.local
 __pycache__
 
+# database private key
+meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
