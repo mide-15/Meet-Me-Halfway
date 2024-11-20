@@ -1,4 +1,5 @@
-Just added log in / log out features along with routing, a nav bar, and placeholder html to show functionality.
+Just added login/logout features along with routing, a nav bar, and placeholder html to show functionality.\
+Logout feature exists on the dashboard page when a user is logged in and redirects user to login page when button is clicked.
 
 <pre>
 "dependencies": {
