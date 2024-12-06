@@ -1,9 +1,4 @@
-Just added login/logout features along with routing, a nav bar, and placeholder html to show functionality.  
-
-Logout feature exists on the dashboard page when a user is logged in and redirects user to login page when button is clicked.  
-
-Will probably try to pull logged in user data from the database via the backend server and display it on the dashboard next.
-
+This is the main branch for the backend.
 <pre>
 "dependencies": {
   "@testing-library/jest-dom": "^5.17.0",
