@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Meet-Me-Halfway/static/css/main.f855e6bc.css",
+    "main.js": "/Meet-Me-Halfway/static/js/main.92d62f1b.js",
+    "static/js/453.c629ac06.chunk.js": "/Meet-Me-Halfway/static/js/453.c629ac06.chunk.js",
+    "static/media/logo.svg": "/Meet-Me-Halfway/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/Meet-Me-Halfway/index.html",
+    "main.f855e6bc.css.map": "/Meet-Me-Halfway/static/css/main.f855e6bc.css.map",
+    "main.92d62f1b.js.map": "/Meet-Me-Halfway/static/js/main.92d62f1b.js.map",
+    "453.c629ac06.chunk.js.map": "/Meet-Me-Halfway/static/js/453.c629ac06.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.92d62f1b.js"
+  ]
+}
