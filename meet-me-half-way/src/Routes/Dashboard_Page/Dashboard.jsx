@@ -1,7 +1,7 @@
 // Placeholder dashboard page
 
 import React from 'react'
-import Navbar from '../Components/Navbar'
+import Navbar from '../../Components/Navbar'
 import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
@@ -30,12 +30,14 @@ const auth = getAuth(app);
 const Dashboard = () => {
   const [authenticated, setAuthenticated] = useState(null);
   const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Check if user is logged in
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
+    const userInfo = localStorage.getItem("user");
+    if (userInfo) {
       setAuthenticated(true);
+      setUser(JSON.parse(userInfo));
     }
   })
 
@@ -70,7 +72,7 @@ const Dashboard = () => {
         {/* Placeholder navbar and page title */}
         <Navbar />
         <h1>Dashboard</h1>
-        <p>Welcome, I need probably need to get your information from the database using the backend</p>
+        <p>Welcome, {user.displayName}!</p>
 
         <div id="button_container">
           <button id="submit" type="submit" onClick={handleLogOut}>Logout</button>

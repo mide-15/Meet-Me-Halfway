@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useState } from 'react'
-import Navbar from '../Components/Navbar'
+import Navbar from '../../Components/Navbar'
 import { Navigate } from 'react-router-dom'
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
@@ -38,7 +38,6 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
-        // Should probably figure out how to return this user value
         const user = userCredential.user;
         localStorage.setItem("user", JSON.stringify(user));
         setShouldRedirect(true);

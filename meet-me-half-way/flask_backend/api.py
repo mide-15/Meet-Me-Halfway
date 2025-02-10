@@ -1,7 +1,7 @@
 import time
 import firebase_admin
 from firebase_admin import credentials, db, auth
-from flask import Flask, request
+from flask import Flask, request, jsonify, make_response
 
 # Connect to the database
 cred = credentials.Certificate("meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json")
@@ -19,18 +19,20 @@ def get_current_time():
 def register():
     email = request.form["email"]
     password = request.form["password"]
-    name = request.form["name"]
+    dname = request.form["dname"]
 
     try:
-        user = auth.create_user(email=email, password=password, display_name=name)
+        user = auth.create_user(email=email, password=password, display_name=dname)
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        res = make_response(jsonify({"status": "error", "message": str(e)}, 400))
+        return res
 
     ref = db.reference("/Users")
 
     ref.child(user.uid).set({
-        "name": name,
+        "name": dname,
         "email": email
     })
 
-    return {"status": "success"}
+    res = make_response(jsonify({"status": "success"}, 200))
+    return res
