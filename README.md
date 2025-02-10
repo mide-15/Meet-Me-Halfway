@@ -1,1 +1,15 @@
-The most recent commits to this branch added the python backend server using flask and modified the react app landing page to display the current unix time by calling it from the backend. The gitignore file was also modified to ignore the \__pycache\__ folder and venv folder that will be needed to run the backend on your local machine. Instructions on how to run the backend and create the necessary python environment are included in the READEME file in the flask_backend folder. Additionally, a script to start the flask server was added to package.json.
+This is the main branch for the backend.
+<pre>
+"dependencies": {
+  "@testing-library/jest-dom": "^5.17.0",
+  "@testing-library/react": "^13.4.0",
+  "@testing-library/user-event": "^13.5.0",
+  "firebase": "^11.0.1",
+  "react": "^18.3.1",
+  "react-dom": "^18.3.1",
+  "react-router": "^6.28.0",
+  "react-router-dom": "^6.28.0",
+  "react-scripts": "5.0.1",
+  "web-vitals": "^2.1.4"
+},
+</pre>
