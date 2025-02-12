@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+#panel {
+  height: 400px;
+  width: 30%;
+  overflow: auto;
+  background: #f7f7f7;
+  padding: 10px;
+}
