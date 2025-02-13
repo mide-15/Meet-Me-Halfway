@@ -6,7 +6,7 @@ const Map = () => {
   const containerStyle = {
     width: "100%",
     height: "400px", // Adjust height as needed
-  };
+  }; //View of the map 
 
   const navigate = useNavigate();
 
