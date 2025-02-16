@@ -1,45 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import React, { useState, useEffect, useRef } from "react";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 
-const NearbySearch = (b) => {
+const NearbySearch = ({ midpoint }) => {
   const mapRef = useRef(null);
+  const [mapCenter, setMapCenter] = useState(midpoint);
+  const [searchType, setSearchType] = useState("restaurant");
 
   const mapContainerStyle = {
-    width: '100vw',
-    height: '100vh',
+    width: "100%",
+    height: "500px",
   };
 
-  const defaultCenter = { lat: 40.7128, lng: -74.0060 }; // Default location (e.g., New York)
-  const [center, setCenter] = useState(defaultCenter);
-
-  // Get user's location
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation not supported by this browser.");
+    if (midpoint) {
+      setMapCenter(midpoint);
     }
-  }, []);
-
-  var lat_midway = (center.lat + 32.7851) / 2;
-  var lng_midway = (center.lng + -96.9683) / 2;
+  }, [midpoint]);
 
   const handleLoad = (map) => {
     mapRef.current = map;
 
     const service = new window.google.maps.places.PlacesService(map);
     const request = {
-        location: { lat: lat_midway, lng: lng_midway },
-        radius: 5000, // Radius in meters
-        // optional parameters  
+      location: midpoint,
+      radius: 5000, 
+      type: searchType, 
     };
 
     service.nearbySearch(request, (results, status) => {
@@ -55,13 +40,19 @@ const NearbySearch = (b) => {
   };
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyA2oxgEXddn3TiBypWPBckx0m6iwn5UDyA" libraries={['places']}>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={{ lat: lat_midway, lng: lng_midway }}
-        zoom={14}
-        onLoad={handleLoad}
-      />
+    <LoadScript googleMapsApiKey="AIzaSyA2oxgEXddn3TiBypWPBckx0m6iwn5UDyA" libraries={["places"]}>
+      <div>
+        <label>Search for: </label>
+        <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
+          <option value="restaurant">Restaurants</option>
+          <option value="hotel">Hotels</option>
+          <option value="gas_station">Gas Stations</option>
+          <option value="cafe">Cafes</option>
+          <option value="supermarket">Supermarkets</option>
+        </select>
+      </div>
+
+      <GoogleMap mapContainerStyle={mapContainerStyle} center={mapCenter} zoom={14} onLoad={handleLoad} />
     </LoadScript>
   );
 };
