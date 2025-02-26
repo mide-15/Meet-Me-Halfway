@@ -3,11 +3,18 @@
 # change username and password
 # edit and view information primarily
 
+
 import time
 import firebase_admin
 # import api.py 
 from firebase_admin import credentials, db, auth
-from flask import Flask, request
+from flask import Flask, request, jsonify, make_response
+
+# Connect to the database
+cred = credentials.Certificate("meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json")
+firebase_admin.initialize_app(cred, {"databaseURL" : "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com/"})
+
+app = Flask(__name__)
 
 # have phone number and address added to register function later
 # alongside username, password
@@ -37,6 +44,8 @@ def update_name(uid, name=new_name):
         print(f'Error updating name: {e}')
         
         
-    
-#def update_phone():
+     res = make_response(jsonify({"status": "success"}, 200))
+    return res
+
 #def update_address():
+# change email maybe
