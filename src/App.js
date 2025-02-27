@@ -1,15 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Map from './Map';
-import MapWithDirections from './MapWithDirections';
-import NearbySearch from './NearbySearch';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MergedMap from './MergedMap';
+//import MapWithDirections from './MapWithDirections';
+//import NearbySearch from './NearbySearch';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MapWithDirections />} />
-        <Route path="/NearbySearch" element={<NearbySearch />} />
+        <Route path="/" element={<MergedMap />} />
+        {/* <Route path="/MapWithDirections" element={<MapWithDirections />} /> */}
+        {/* <Route path="/NearbySearch" element={<NearbySearch />} /> */}
       </Routes>
     </Router>
   );
