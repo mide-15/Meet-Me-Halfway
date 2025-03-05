@@ -3,7 +3,6 @@
 # change username and password
 # edit and view information primarily
 
-
 import time
 import firebase_admin
 # import api.py 
