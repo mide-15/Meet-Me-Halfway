@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { GoogleMap, useJsApiLoader, DirectionsRenderer, Marker } from "@react-google-maps/api";
-//import { Link } from "react-router-dom";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  DirectionsRenderer,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
 
 const containerStyle = {
   width: "100%",
@@ -18,6 +23,8 @@ const MergedMap = () => {
   const [center, setCenter] = useState(defaultCenter);
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [places, setPlaces] = useState([]);
+  const [originAutocomplete, setOriginAutocomplete] = useState(null);
+  const [destinationAutocomplete, setDestinationAutocomplete] = useState(null);
   const mapRef = useRef(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
@@ -41,7 +48,9 @@ const MergedMap = () => {
 
   const geocodeAddress = async (address) => {
     const apiKey = "AIzaSyA2oxgEXddn3TiBypWPBckx0m6iwn5UDyA";
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+      address
+    )}&key=${apiKey}`;
 
     try {
       const response = await fetch(url);
@@ -64,7 +73,7 @@ const MergedMap = () => {
   });
 
   const fetchDirections = async () => {
-    setDirectionsResponse(null); // Clear previous directions to force recalculation
+    setDirectionsResponse(null); // Clear previous directions
     if (!window.google || !window.google.maps) {
       console.error("Google Maps not loaded.");
       return;
@@ -84,15 +93,8 @@ const MergedMap = () => {
     }
 
     setOriginCoords(coords1);
-    setDirectionsResponse(null);
-    setOriginCoords(null);
-    setDestinationCoords(null);
-    setMidpoint(null);
     setDestinationCoords(coords2);
-    setDirectionsResponse(null);
-    setOriginCoords(null);
-    setDestinationCoords(null);
-    setMidpoint(null);
+
     const midpointCalculated = calculateMidpoint(coords1, coords2);
     setMidpoint(midpointCalculated);
     setCenter(midpointCalculated);
@@ -130,7 +132,6 @@ const MergedMap = () => {
     const request = {
       location: midpoint,
       radius: 5000,
-    
     };
 
     service.nearbySearch(request, (results, status) => {
@@ -148,12 +149,51 @@ const MergedMap = () => {
   return (
     <>
       <div style={{ marginBottom: "10px" }}>
-        <input type="text" placeholder="Enter origin address" value={origin} onChange={(e) => setOrigin(e.target.value)} />
-        <input type="text" placeholder="Enter destination address" value={destination} onChange={(e) => setDestination(e.target.value)} />
+        <Autocomplete
+          onLoad={(autocomplete) => setOriginAutocomplete(autocomplete)}
+          onPlaceChanged={() => {
+            if (originAutocomplete) {
+              const place = originAutocomplete.getPlace();
+              setOrigin(place.formatted_address || "");
+            }
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Enter origin address"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value)}
+            style={{ width: "300px", marginRight: "10px" }}
+          />
+        </Autocomplete>
+
+        <Autocomplete
+          onLoad={(autocomplete) => setDestinationAutocomplete(autocomplete)}
+          onPlaceChanged={() => {
+            if (destinationAutocomplete) {
+              const place = destinationAutocomplete.getPlace();
+              setDestination(place.formatted_address || "");
+            }
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Enter destination address"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+            style={{ width: "300px", marginRight: "10px" }}
+          />
+        </Autocomplete>
+
         <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10} onLoad={(map) => (mapRef.current = map)}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={(map) => (mapRef.current = map)}
+      >
         {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
         {originCoords && <Marker position={originCoords} label="A" />}
         {destinationCoords && <Marker position={destinationCoords} label="B" />}
@@ -162,7 +202,6 @@ const MergedMap = () => {
           <Marker key={index} position={place.geometry.location} />
         ))}
       </GoogleMap>
-
     </>
   );
 };
