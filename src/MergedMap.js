@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   GoogleMap,
   useJsApiLoader,
@@ -15,6 +15,7 @@ const containerStyle = {
 const defaultCenter = { lat: 40.7128, lng: -74.0060 };
 
 const MergedMap = () => {
+  // Basic states
   const [origin, setOrigin] = useState("");
   const [destination, setDestination] = useState("");
   const [originCoords, setOriginCoords] = useState(null);
@@ -23,12 +24,19 @@ const MergedMap = () => {
   const [center, setCenter] = useState(defaultCenter);
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [places, setPlaces] = useState([]);
-  const [originAutocomplete, setOriginAutocomplete] = useState(null);
-  const [destinationAutocomplete, setDestinationAutocomplete] = useState(null);
-  // New state for travel mode; default is "DRIVING"
   const [travelMode, setTravelMode] = useState("DRIVING");
 
+  // Autocomplete refs
+  const [originAutocomplete, setOriginAutocomplete] = useState(null);
+  const [destinationAutocomplete, setDestinationAutocomplete] = useState(null);
+
+  // New states for place filtering controls
+  const [radius, setRadius] = useState(5000); // in meters
+  const [placeFilter, setPlaceFilter] = useState("all"); // "all" means no filtering
+
+  // Refs for map and directions renderers
   const mapRef = useRef(null);
+  const directionsRenderersRef = useRef([]);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyA2oxgEXddn3TiBypWPBckx0m6iwn5UDyA",
@@ -75,8 +83,21 @@ const MergedMap = () => {
     lng: (coord1.lng + coord2.lng) / 2,
   });
 
+  // Function to clear existing DirectionsRenderer overlays.
+  const clearDirectionsOverlays = () => {
+    directionsRenderersRef.current.forEach((dr) => dr.setMap(null));
+    directionsRenderersRef.current = [];
+  };
+
   const fetchDirections = async () => {
+    // Clear previous overlays and state values.
+    clearDirectionsOverlays();
     setDirectionsResponse(null);
+    setOriginCoords(null);
+    setDestinationCoords(null);
+    setMidpoint(null);
+    setPlaces([]);
+
     if (!window.google || !window.google.maps) {
       console.error("Google Maps not loaded.");
       return;
@@ -107,7 +128,7 @@ const MergedMap = () => {
         origin: coords1,
         destination: coords2,
         travelMode: window.google.maps.TravelMode[travelMode],
-        provideRouteAlternatives: true, // Request alternative routes
+        provideRouteAlternatives: true,
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
@@ -120,29 +141,48 @@ const MergedMap = () => {
     );
   };
 
-  const fetchNearbyPlaces = (midpoint) => {
-    if (!midpoint || !window.google || !window.google.maps) {
-      console.error("Midpoint or Google Maps API not loaded.");
-      return;
-    }
-    if (!mapRef.current) {
-      console.error("Map reference is not set.");
-      return;
-    }
-    const service = new window.google.maps.places.PlacesService(mapRef.current);
-    const request = {
-      location: midpoint,
-      radius: 5000,
-    };
-
-    service.nearbySearch(request, (results, status) => {
-      if (status === window.google.maps.places.PlacesServiceStatus.OK && results) {
-        setPlaces(results);
-      } else {
-        console.error("Nearby search failed:", status);
+  // Wrap fetchNearbyPlaces in useCallback for a stable function reference.
+  const fetchNearbyPlaces = useCallback(
+    (midpoint) => {
+      if (!midpoint || !window.google || !window.google.maps) {
+        console.error("Midpoint or Google Maps API not loaded.");
+        return;
       }
-    });
-  };
+      if (!mapRef.current) {
+        console.error("Map reference is not set.");
+        return;
+      }
+
+      const service = new window.google.maps.places.PlacesService(mapRef.current);
+      const request = {
+        location: midpoint,
+        radius: radius,
+      };
+
+      if (placeFilter !== "all") {
+        request.type = placeFilter;
+      }
+
+      service.nearbySearch(request, (results, status) => {
+        if (
+          status === window.google.maps.places.PlacesServiceStatus.OK &&
+          results
+        ) {
+          setPlaces(results);
+        } else {
+          console.error("Nearby search failed:", status);
+        }
+      });
+    },
+    [radius, placeFilter]
+  );
+
+  // Refetch nearby places when radius, placeFilter, or midpoint changes.
+  useEffect(() => {
+    if (midpoint) {
+      fetchNearbyPlaces(midpoint);
+    }
+  }, [radius, placeFilter, midpoint, fetchNearbyPlaces]);
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
@@ -186,9 +226,8 @@ const MergedMap = () => {
           />
         </Autocomplete>
 
-        {/* New dropdown to select travel mode */}
-        <select 
-          value={travelMode} 
+        <select
+          value={travelMode}
           onChange={(e) => setTravelMode(e.target.value)}
           style={{ marginRight: "10px" }}
         >
@@ -201,21 +240,58 @@ const MergedMap = () => {
         <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
+      {/* Controls for Radius and Place Filtering */}
+      <div style={{ marginBottom: "10px" }}>
+        <label>
+          Radius (meters): {radius}{" "}
+          <input
+            type="range"
+            min="1000"
+            max="10000"
+            step="500"
+            value={radius}
+            onChange={(e) => setRadius(parseInt(e.target.value))}
+          />
+        </label>
+        <label style={{ marginLeft: "10px" }}>
+          Place Filter:{" "}
+          <select
+            value={placeFilter}
+            onChange={(e) => setPlaceFilter(e.target.value)}
+          >
+            <option value="all">All</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="cafe">Cafe</option>
+            <option value="bar">Bar</option>
+            <option value="museum">Museum</option>
+            <option value="park">Park</option>
+            <option value="shopping_mall">Shopping Mall</option>
+            <option value="gas_station">Gas Station</option>
+          </select>
+        </label>
+      </div>
+
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}
         zoom={10}
         onLoad={(map) => (mapRef.current = map)}
       >
-        {/* Render each alternative route */}
         {directionsResponse &&
           directionsResponse.routes.map((route, index) => (
             <DirectionsRenderer
               key={index}
               directions={{ ...directionsResponse, routes: [route] }}
+              onLoad={(dr) => {
+                directionsRenderersRef.current.push(dr);
+              }}
+              onUnmount={(dr) => {
+                directionsRenderersRef.current = directionsRenderersRef.current.filter(
+                  (item) => item !== dr
+                );
+              }}
             />
-          ))
-        }
+          ))}
         {originCoords && <Marker position={originCoords} label="A" />}
         {destinationCoords && <Marker position={destinationCoords} label="B" />}
         {midpoint && <Marker position={midpoint} label="C" />}
