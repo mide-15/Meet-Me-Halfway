@@ -12,7 +12,7 @@ const containerStyle = {
   height: "500px",
 };
 
-const defaultCenter = { lat: 40.7128, lng: -74.0060 }; // Default to NYC
+const defaultCenter = { lat: 40.7128, lng: -74.0060 };
 
 const MergedMap = () => {
   const [origin, setOrigin] = useState("");
@@ -25,6 +25,9 @@ const MergedMap = () => {
   const [places, setPlaces] = useState([]);
   const [originAutocomplete, setOriginAutocomplete] = useState(null);
   const [destinationAutocomplete, setDestinationAutocomplete] = useState(null);
+  // New state for travel mode; default is "DRIVING"
+  const [travelMode, setTravelMode] = useState("DRIVING");
+
   const mapRef = useRef(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
@@ -73,12 +76,11 @@ const MergedMap = () => {
   });
 
   const fetchDirections = async () => {
-    setDirectionsResponse(null); // Clear previous directions
+    setDirectionsResponse(null);
     if (!window.google || !window.google.maps) {
       console.error("Google Maps not loaded.");
       return;
     }
-
     if (!origin || !destination) {
       alert("Please enter both addresses.");
       return;
@@ -104,7 +106,8 @@ const MergedMap = () => {
       {
         origin: coords1,
         destination: coords2,
-        travelMode: window.google.maps.TravelMode.DRIVING,
+        travelMode: window.google.maps.TravelMode[travelMode],
+        provideRouteAlternatives: true, // Request alternative routes
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
@@ -122,12 +125,10 @@ const MergedMap = () => {
       console.error("Midpoint or Google Maps API not loaded.");
       return;
     }
-
     if (!mapRef.current) {
       console.error("Map reference is not set.");
       return;
     }
-
     const service = new window.google.maps.places.PlacesService(mapRef.current);
     const request = {
       location: midpoint,
@@ -185,6 +186,18 @@ const MergedMap = () => {
           />
         </Autocomplete>
 
+        {/* New dropdown to select travel mode */}
+        <select 
+          value={travelMode} 
+          onChange={(e) => setTravelMode(e.target.value)}
+          style={{ marginRight: "10px" }}
+        >
+          <option value="DRIVING">Driving</option>
+          <option value="WALKING">Walking</option>
+          <option value="BICYCLING">Bicycling</option>
+          <option value="TRANSIT">Transit</option>
+        </select>
+
         <button onClick={fetchDirections}>Get Directions</button>
       </div>
 
@@ -194,7 +207,15 @@ const MergedMap = () => {
         zoom={10}
         onLoad={(map) => (mapRef.current = map)}
       >
-        {directionsResponse && <DirectionsRenderer directions={directionsResponse} />}
+        {/* Render each alternative route */}
+        {directionsResponse &&
+          directionsResponse.routes.map((route, index) => (
+            <DirectionsRenderer
+              key={index}
+              directions={{ ...directionsResponse, routes: [route] }}
+            />
+          ))
+        }
         {originCoords && <Marker position={originCoords} label="A" />}
         {destinationCoords && <Marker position={destinationCoords} label="B" />}
         {midpoint && <Marker position={midpoint} label="C" />}
