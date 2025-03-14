@@ -19,12 +19,9 @@ const Navbar = () => {
   return (
     <div className="navbar-breakpoint">
       <div className="container">
-        <div className="content">
-          <div className="logo" />
-        </div>
 
         <div className="actions">
-          <div className="button"><Link className="link-styles" to="/dashboard">Dashboard</Link></div>
+          <div className="button"><Link className="link-styles" to="/">Dashboard</Link></div>
 
           <div className="button"><Link className="link-styles" to="/login">Login</Link></div>
 
@@ -35,7 +32,7 @@ const Navbar = () => {
           </button>
 
           <button className="button-wrapper">
-            <button className="button-3">View Map</button>
+            <button className="button-2"><Link className="link-styles-1" to="/Dashboard">View Map</Link></button>
           </button>
           </div>
 

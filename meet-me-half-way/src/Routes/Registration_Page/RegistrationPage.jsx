@@ -41,7 +41,7 @@ const RegistrationPage = () => {
   return (
     <div className="registration-page">
       <div className="div">
-        <Navbar />
+      <Navbar />
         <div className="overlap-group">
           <div className="frame">
             <div className="signup-property-wrapper">
