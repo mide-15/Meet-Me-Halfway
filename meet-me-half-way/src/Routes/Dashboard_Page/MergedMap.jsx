@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import Navbar from '../../Components/Navbar'
 import {
   GoogleMap,
   useJsApiLoader,
@@ -9,7 +10,7 @@ import {
 
 const containerStyle = {
   width: "100%",
-  height: "500px",
+  height: "100%"
 };
 
 const defaultCenter = { lat: 40.7128, lng: -74.0060 };
@@ -189,7 +190,8 @@ const MergedMap = () => {
 
   return (
     <>
-      <div style={{ marginBottom: "10px" }}>
+      <Navbar />
+      <div style={{ marginBottom: "10px", marginTop: "75px"}}>
         <Autocomplete
           onLoad={(autocomplete) => setOriginAutocomplete(autocomplete)}
           onPlaceChanged={() => {
@@ -271,34 +273,36 @@ const MergedMap = () => {
         </label>
       </div>
 
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={(map) => (mapRef.current = map)}
-      >
-        {directionsResponse &&
-          directionsResponse.routes.map((route, index) => (
-            <DirectionsRenderer
-              key={index}
-              directions={{ ...directionsResponse, routes: [route] }}
-              onLoad={(dr) => {
-                directionsRenderersRef.current.push(dr);
-              }}
-              onUnmount={(dr) => {
-                directionsRenderersRef.current = directionsRenderersRef.current.filter(
-                  (item) => item !== dr
-                );
-              }}
-            />
+      <div style ={{ display: "inline-block", height: "80vh", width: "100vw", alignItems: "center" }}>
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+          onLoad={(map) => (mapRef.current = map)}
+        >
+          {directionsResponse &&
+            directionsResponse.routes.map((route, index) => (
+              <DirectionsRenderer
+                key={index}
+                directions={{ ...directionsResponse, routes: [route] }}
+                onLoad={(dr) => {
+                  directionsRenderersRef.current.push(dr);
+                }}
+                onUnmount={(dr) => {
+                  directionsRenderersRef.current = directionsRenderersRef.current.filter(
+                    (item) => item !== dr
+                  );
+                }}
+              />
+            ))}
+          {originCoords && <Marker position={originCoords} label="A" />}
+          {destinationCoords && <Marker position={destinationCoords} label="B" />}
+          {midpoint && <Marker position={midpoint} label="C" />}
+          {places.map((place, index) => (
+            <Marker key={index} position={place.geometry.location} />
           ))}
-        {originCoords && <Marker position={originCoords} label="A" />}
-        {destinationCoords && <Marker position={destinationCoords} label="B" />}
-        {midpoint && <Marker position={midpoint} label="C" />}
-        {places.map((place, index) => (
-          <Marker key={index} position={place.geometry.location} />
-        ))}
-      </GoogleMap>
+        </GoogleMap>
+      </div>
     </>
   );
 };

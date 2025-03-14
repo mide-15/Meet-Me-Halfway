@@ -23,37 +23,24 @@ const Navbar = () => {
           <div className="logo" />
         </div>
 
-        <div className="column">
-          <div className="column-2">
-            <div className="text-wrapper"><Link to="/dashboard">Dashboard</Link></div>
+        <div className="actions">
+          <div className="button"><Link className="link-styles" to="/dashboard">Dashboard</Link></div>
 
-            <div className="text-wrapper"><Link to="/login">Login</Link></div>
+          <div className="button"><Link className="link-styles" to="/login">Login</Link></div>
 
-            <div className="text-wrapper"><Link to="/registration">Registration</Link></div>
+          <div className="button"><Link className="link-styles" to="/registration">Registration</Link></div>
 
-            <div className="nav-link-dropdown">
-              <div className="text-wrapper">Menu</div>
+          <button className="button">
+            <button className="button-2">Create Poll</button>
+          </button>
 
-              <img
-                className="img"
-                alt="Chevron down"
-                src="https://c.animaapp.com/BqPHfIZl/img/chevron-down.svg"
-              />
-            </div>
+          <button className="button-wrapper">
+            <button className="button-3">View Map</button>
+          </button>
           </div>
 
-          <div className="actions">
-            <button className="button">
-              <button className="button-2">Create Poll</button>
-            </button>
-
-            <button className="button-wrapper">
-              <button className="button-3">View Map</button>
-            </button>
-          </div>
         </div>
       </div>
-    </div>
   )
 }
 
