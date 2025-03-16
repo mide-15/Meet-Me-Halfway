@@ -186,6 +186,14 @@ const MergedMap = () => {
 
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
+  const customIcon = {
+    url: "https://cdn1.iconfinder.com/data/icons/color-bold-style/21/14_1-512.png",
+    scaledSize: new window.google.maps.Size(40, 40),
+  };
+  const nearbyPlaceIcon = {
+    url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png",
+    scaledSize: new window.google.maps.Size(30, 30),
+  };
 
   return (
     <>
@@ -292,11 +300,11 @@ const MergedMap = () => {
               }}
             />
           ))}
-        {originCoords && <Marker position={originCoords} label="A" />}
-        {destinationCoords && <Marker position={destinationCoords} label="B" />}
-        {midpoint && <Marker position={midpoint} label="C" />}
+        {originCoords && <Marker position={originCoords} />}
+        {destinationCoords && <Marker position={destinationCoords} />}
+        {midpoint && <Marker position={midpoint} icon={customIcon} />}
         {places.map((place, index) => (
-          <Marker key={index} position={place.geometry.location} />
+          <Marker key={index} position={place.geometry.location} icon={nearbyPlaceIcon} />
         ))}
       </GoogleMap>
     </>
