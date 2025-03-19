@@ -37,7 +37,7 @@ def update_name(uid, name=new_name):
             'username': new_name
         })
         
-        user = auth.update_user(uid, email=new_name)
+        user = auth.update_user(uid, name=new_name)
         print(f'Successfully updated name for user: {user.uid}')
     except auth.AuthError as e:
         print(f'Error updating name: {e}')
@@ -46,5 +46,21 @@ def update_name(uid, name=new_name):
      res = make_response(jsonify({"status": "success"}, 200))
     return res
 
-#def update_address():
-# change email maybe
+def update_address(uid, name=new_email):
+    try:
+        # get the Firestore reference to the user's settings document
+        user_ref = db.collection('users').document(uid)
+        
+        # update the email address field in the user's document
+        user_ref.update({
+            'email address': new_email
+        })
+        
+        user = auth.update_user(uid, email=new_name)
+        print(f'Successfully updated email address for user: {user.uid}')
+    except auth.AuthError as e:
+        print(f'Error updating email address: {e}')
+        
+        
+     res = make_response(jsonify({"status": "success"}, 200))
+    return res
