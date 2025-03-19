@@ -1,4 +1,6 @@
-import { Input, Text, Button } from "../../components";
+import componentsText.jsx;
+import componentsInput.jsx;
+import componentsButton.jsx;
 import React from "react";
 
 export default function ProfileSettingSection() {
