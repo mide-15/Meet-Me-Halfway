@@ -4,9 +4,10 @@ import Navbar from '../../Components/Navbar'
 
 const HomePage = () => {
   return (
+    <>
+    <Navbar />
     <div className="home-page">
       <div className="div">
-        <Navbar />
         <div className="overlap-group">
           <div className="header-breakpoint">
             <div className="container-2">
@@ -234,6 +235,7 @@ const HomePage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

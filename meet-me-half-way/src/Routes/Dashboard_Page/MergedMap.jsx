@@ -210,92 +210,89 @@ const MergedMap = () => {
 
   return (
     <>
+      <Navbar />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Autocomplete
+          onLoad={(autocomplete) => setOriginAutocomplete(autocomplete)}
+          onPlaceChanged={() => {
+            if (originAutocomplete) {
+              const place = originAutocomplete.getPlace();
+              setOrigin(place.formatted_address || "");
+            }
+          }}
+        >
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="Enter origin address"
+            value={origin}
+            onChange={(e) => setOrigin(e.target.value)}
+          />
+        </Autocomplete>
+
+        <Autocomplete
+          onLoad={(autocomplete) => setDestinationAutocomplete(autocomplete)}
+          onPlaceChanged={() => {
+            if (destinationAutocomplete) {
+              const place = destinationAutocomplete.getPlace();
+              setDestination(place.formatted_address || "");
+            }
+          }}
+        >
+          <input
+            style={inputStyle}
+            type="text"
+            placeholder="Enter destination address"
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
+          />
+        </Autocomplete>
+      </div>
       
-      <div style={{ marginBottom: "10px", marginTop: "75px"}}>
-        <Navbar />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <Autocomplete
-            onLoad={(autocomplete) => setOriginAutocomplete(autocomplete)}
-            onPlaceChanged={() => {
-              if (originAutocomplete) {
-                const place = originAutocomplete.getPlace();
-                setOrigin(place.formatted_address || "");
-              }
-            }}
-          >
-            <input
-              style={inputStyle}
-              type="text"
-              placeholder="Enter origin address"
-              value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
-            />
-          </Autocomplete>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
+        <select
+          value={travelMode}
+          onChange={(e) => setTravelMode(e.target.value)}
+          style={{ marginRight: "10px" }}
+        >
+          <option value="DRIVING">Driving</option>
+          <option value="WALKING">Walking</option>
+          <option value="BICYCLING">Bicycling</option>
+          <option value="TRANSIT">Transit</option>
+        </select>
 
-          <Autocomplete
-            onLoad={(autocomplete) => setDestinationAutocomplete(autocomplete)}
-            onPlaceChanged={() => {
-              if (destinationAutocomplete) {
-                const place = destinationAutocomplete.getPlace();
-                setDestination(place.formatted_address || "");
-              }
-            }}
-          >
-            <input
-              style={inputStyle}
-              type="text"
-              placeholder="Enter destination address"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-            />
-          </Autocomplete>
-        </div>
-        
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
+        <button onClick={fetchDirections}>Get Directions</button>
+      </div>
+
+      {/* Controls for Radius and Place Filtering */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
+        <label>
+          Radius (meters): {radius}{" "}
+          <input
+            type="range"
+            min="1000"
+            max="10000"
+            step="500"
+            value={radius}
+            onChange={(e) => setRadius(parseInt(e.target.value))}
+          />
+        </label>
+        <label style={{ marginLeft: "10px" }}>
+          Place Filter:{" "}
           <select
-            value={travelMode}
-            onChange={(e) => setTravelMode(e.target.value)}
-            style={{ marginRight: "10px" }}
+            value={placeFilter}
+            onChange={(e) => setPlaceFilter(e.target.value)}
           >
-            <option value="DRIVING">Driving</option>
-            <option value="WALKING">Walking</option>
-            <option value="BICYCLING">Bicycling</option>
-            <option value="TRANSIT">Transit</option>
+            <option value="all">All</option>
+            <option value="restaurant">Restaurant</option>
+            <option value="cafe">Cafe</option>
+            <option value="bar">Bar</option>
+            <option value="museum">Museum</option>
+            <option value="park">Park</option>
+            <option value="shopping_mall">Shopping Mall</option>
+            <option value="gas_station">Gas Station</option>
           </select>
-
-          <button onClick={fetchDirections}>Get Directions</button>
-        </div>
-
-        {/* Controls for Radius and Place Filtering */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "10px" }}>
-          <label>
-            Radius (meters): {radius}{" "}
-            <input
-              type="range"
-              min="1000"
-              max="10000"
-              step="500"
-              value={radius}
-              onChange={(e) => setRadius(parseInt(e.target.value))}
-            />
-          </label>
-          <label style={{ marginLeft: "10px" }}>
-            Place Filter:{" "}
-            <select
-              value={placeFilter}
-              onChange={(e) => setPlaceFilter(e.target.value)}
-            >
-              <option value="all">All</option>
-              <option value="restaurant">Restaurant</option>
-              <option value="cafe">Cafe</option>
-              <option value="bar">Bar</option>
-              <option value="museum">Museum</option>
-              <option value="park">Park</option>
-              <option value="shopping_mall">Shopping Mall</option>
-              <option value="gas_station">Gas Station</option>
-            </select>
-          </label>
-        </div>
+        </label>
       </div>
 
       <div style ={{ display: "inline-block", height: "80vh", width: "100vw", alignItems: "center" }}>

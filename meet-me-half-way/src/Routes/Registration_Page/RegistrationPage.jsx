@@ -39,9 +39,10 @@ const RegistrationPage = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="registration-page">
       <div className="div">
-      <Navbar />
         <div className="overlap-group">
           <div className="frame">
             <div className="signup-property-wrapper">
@@ -282,6 +283,7 @@ const RegistrationPage = () => {
       </div>
       { shouldRedirect && <Navigate to="/dashboard" /> }
     </div>
+    </>
   );
 };
 
