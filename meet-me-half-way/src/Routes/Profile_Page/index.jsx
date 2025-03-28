@@ -1,6 +1,6 @@
 import {Helmet } from "react-helmet";
 import { Button } from "../../components";
-import Profile InformationSection from "./ProfileInformationSection"; 
+import Profile from "./Profile"; 
 import React from "react";
 
 export default function ProfilePage() {
@@ -21,7 +21,7 @@ export default function ProfilePage() {
         </header>
         
         {/* profile information section */}
-        <ProfileInformationSection />
+        <Profile />
       </div>
     </>
   );
