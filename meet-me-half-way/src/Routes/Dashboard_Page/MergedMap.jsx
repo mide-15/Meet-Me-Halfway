@@ -46,6 +46,8 @@ const MergedMap = () => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [places, setPlaces] = useState([]);
   const [travelMode, setTravelMode] = useState("DRIVING");
+  const [directionsSteps1, setDirectionsSteps1] = useState([]);
+  const [directionsSteps2, setDirectionsSteps2] = useState([]);
 
   // Autocomplete refs
   const [originAutocomplete, setOriginAutocomplete] = useState(null);
@@ -110,6 +112,56 @@ const MergedMap = () => {
     directionsRenderersRef.current = [];
   };
 
+  const handleMarkerClick = (position) => {
+    setDestinationCoords(position);
+    fetchDirections1(position);
+    fetchDirections2(position);
+  };
+
+  const fetchDirections1 = (destination) => {
+    if (!originCoords || !destination) return;
+    
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: originCoords,
+        destination: destination,
+        travelMode: window.google.maps.TravelMode[travelMode],
+      },
+      (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirectionsResponse(result);
+          const steps = result.routes[0].legs[0].steps.map((step) => step.instructions);
+          setDirectionsSteps1(steps);
+        } else {
+          console.error("Error fetching directions:", status);
+        }
+      }
+    );
+  };
+
+  const fetchDirections2 = (destination) => {
+    if (!originCoords || !destination) return;
+    
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: destinationCoords,
+        destination: destination,
+        travelMode: window.google.maps.TravelMode[travelMode],
+      },
+      (result, status) => {
+        if (status === window.google.maps.DirectionsStatus.OK) {
+          setDirectionsResponse(result);
+          const steps = result.routes[0].legs[0].steps.map((step) => step.instructions);
+          setDirectionsSteps2(steps);
+        } else {
+          console.error("Error fetching directions:", status);
+        }
+      }
+    );
+  };
+
   const fetchDirections = async () => {
     // Clear previous overlays and state values.
     clearDirectionsOverlays();
@@ -153,7 +205,7 @@ const MergedMap = () => {
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
-          setDirectionsResponse(result);
+          //setDirectionsResponse(result);
           fetchNearbyPlaces(midpointCalculated);
         } else {
           console.error("Error fetching directions:", status);
@@ -208,6 +260,15 @@ const MergedMap = () => {
   if (loadError) return <div>Error loading maps</div>;
   if (!isLoaded) return <div>Loading...</div>;
 
+  const customIcon = {
+    url: "https://cdn1.iconfinder.com/data/icons/color-bold-style/21/14_1-512.png", // Replace with your desired icon URL
+    scaledSize: new window.google.maps.Size(40, 40), // Adjust size as needed
+  };
+  const nearbyPlaceIcon = {
+    url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png", // Yellow marker for nearby places
+    scaledSize: new window.google.maps.Size(30, 30), // Adjust size if needed
+  };
+
   return (
     <>
       <Navbar />
@@ -224,7 +285,7 @@ const MergedMap = () => {
           <input
             style={inputStyle}
             type="text"
-            placeholder="Enter origin address"
+            placeholder="Enter first address"
             value={origin}
             onChange={(e) => setOrigin(e.target.value)}
           />
@@ -242,7 +303,7 @@ const MergedMap = () => {
           <input
             style={inputStyle}
             type="text"
-            placeholder="Enter destination address"
+            placeholder="Enter second address"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
           />
@@ -317,13 +378,33 @@ const MergedMap = () => {
                 }}
               />
             ))}
-          {originCoords && <Marker position={originCoords} label="A" />}
-          {destinationCoords && <Marker position={destinationCoords} label="B" />}
-          {midpoint && <Marker position={midpoint} label="C" />}
+          {originCoords && <Marker position={originCoords} />}
+          {destinationCoords && <Marker position={destinationCoords} />}
+          {midpoint && <Marker position={midpoint} icon={customIcon} />}
           {places.map((place, index) => (
-            <Marker key={index} position={place.geometry.location} />
+            <Marker key={index} position={place.geometry.location} onClick={() => handleMarkerClick(place.geometry.location)} icon={nearbyPlaceIcon} />
           ))}
         </GoogleMap>
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
+      <div style={{ maxHeight: "200px", overflowY: "auto", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "5px", marginTop: "10px", width: "50%" }}>
+        <h3>Address 1 Directions</h3>
+        <ul>
+            {directionsSteps1.map((step, index) => (
+                <li key={index} dangerouslySetInnerHTML={{ __html: step }}></li>
+            ))}
+        </ul>
+      </div>
+
+      <div style={{ maxHeight: "200px", overflowY: "auto", padding: "10px", backgroundColor: "#f8f9fa", borderRadius: "5px", marginTop: "10px", width: "50%" }}>
+        <h3>Address 2 Directions</h3>
+        <ul>
+            {directionsSteps2.map((step, index) => (
+                <li key={index} dangerouslySetInnerHTML={{ __html: step }}></li>
+            ))}
+        </ul>
+      </div>
       </div>
     </>
   );
