@@ -110,10 +110,11 @@ const MergedMap = () => {
   const clearDirectionsOverlays = () => {
     directionsRenderersRef.current.forEach((dr) => dr.setMap(null));
     directionsRenderersRef.current = [];
+    setDirectionsResponse(null);
   };
 
   const handleMarkerClick = (position) => {
-    setDestinationCoords(position);
+    clearDirectionsOverlays();
     fetchDirections1(position);
     fetchDirections2(position);
   };
