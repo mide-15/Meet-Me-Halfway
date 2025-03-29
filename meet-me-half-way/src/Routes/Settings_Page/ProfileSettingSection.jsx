@@ -1,4 +1,5 @@
-import { Input, Text } from "../../components";
+import { Text } from "../../components";
+import { Input } from "../../components/Input";
 import React from "react";
 
 export default function ProfileSettingSection() {
