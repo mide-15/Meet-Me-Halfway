@@ -1,4 +1,4 @@
-import { Text } from "../../components/Text/index";
+import { Text } from "../../components/Text";
 import React from "react";
 
 export default function ProfileInformationSection() {
