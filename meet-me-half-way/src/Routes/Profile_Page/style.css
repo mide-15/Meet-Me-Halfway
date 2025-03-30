@@ -1,38 +1,45 @@
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url("/public/fonts/SchibstedGroteskRegular.ttf");
+  src: url("/fonts/SchibstedGroteskRegular.ttf") format("truetype");
   font-family: "Schibsted Grotesk";
   font-weight: 400;
 }
+
 @font-face {
   font-display: swap;
   font-style: normal;
-  src: url("/public/fonts/PoppinsRegular.ttf");
+  src: url("/fonts/PoppinsRegular.ttf") format("truetype");
   font-family: "Poppins";
   font-weight: 400;
 }
+
 body {
   margin: 0;
   padding: 0;
-  font-family: Poppins;
+  font-family: "Poppins", sans-serif;
 }
+
 * {
   box-sizing: border-box;
   line-height: normal;
   font-family: inherit;
-  margin: unset;
+  margin: 0;
 }
+
 input {
   background-color: transparent;
   width: 100%;
 }
+
 input:focus {
   outline: none;
 }
-@tailwind base; 
-@tailwind components; 
+
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     /* ------Color variables ------*/
@@ -54,6 +61,7 @@ input:focus {
     --space-md: 14px;
     --space-lg: 20px;
   }
+
   [type="text"],
   input:where(:not([type])),
   [type="email"],
@@ -72,30 +80,31 @@ input:focus {
   select {
     appearance: none;
     background-color: transparent;
-    border-color: unset;
+    border-color: transparent;
     border-width: 0;
-    border-radius: unset;
-    padding: unset; 
-    font-size: unset; 
-    line-height: unset;
+    border-radius: 0;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
   }
 
-  /* Override default focus colors for tailwindcss-forms https://github.com/tailwindlabs/tailwindcss-forms */ 
+  /* Override default focus colors for tailwindcss-forms */
   [type="text"]:focus,
   [type="email"]:focus,
   [type="url"]:focus,
-  [type="password"]: focus,
+  [type="password"]:focus,
   [type="number"]:focus,
   [type="date"]:focus,
-  [type="search"]:focus, 
-  [multiple]: focus,
+  [type="search"]:focus,
+  [multiple]:focus,
   textarea:focus,
-  select: focus {
+  select:focus {
     --tw-ring-color: transparent;
     border-color: transparent;
   }
+
   [type="radio"]:focus,
-  [type="checkbox"]: focus {
+  [type="checkbox"]:focus {
     --tw-ring-color: transparent;
   }
 }
