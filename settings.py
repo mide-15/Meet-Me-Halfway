@@ -80,3 +80,58 @@ def update_city(uid, new_city):
     except Exception as e:
         print(f"Error updating city: {e}")
         return make_response(jsonify({"error": str(e)}), 400)
+
+# Update multiple user fields in one API call
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    data = request.get_json()
+
+    uid = data.get('uid')
+    new_name = data.get('name')
+    new_email = data.get('email')
+    new_password = data.get('password')
+    confirm_password = data.get('confirm_password')
+    new_address = data.get('address')
+    new_state = data.get('state')
+    new_city = data.get('city')
+
+    # Update name if provided
+    if new_name:
+        name_response = update_name(uid, new_name)
+        if name_response.status_code != 200:
+            return name_response
+
+    # Update email if provided
+    if new_email:
+        email_response = update_email(uid, new_email)
+        if email_response.status_code != 200:
+            return email_response
+
+    # Update password if provided and confirmed
+    if new_password:
+        password_response = update_password(uid, new_password, confirm_password)
+        if password_response.status_code != 200:
+            return password_response
+
+    # Update address if provided
+    if new_address:
+        address_response = update_address(uid, new_address)
+        if address_response.status_code != 200:
+            return address_response
+
+    # Update state if provided
+    if new_state:
+        state_response = update_state(uid, new_state)
+        if state_response.status_code != 200:
+            return state_response
+
+    # Update city if provided
+    if new_city:
+        city_response = update_city(uid, new_city)
+        if city_response.status_code != 200:
+            return city_response
+
+    return make_response(jsonify({"status": "success"}), 200)
+
+if __name__ == "__main__":
+    app.run(debug=True)
