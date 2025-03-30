@@ -1,6 +1,7 @@
 import time
 import firebase_admin
 from firebase_admin import credentials, db, auth
+from firebase_admin.exceptions import FirebaseError
 from flask import Flask, request, jsonify, make_response
 
 # Connect to the database
@@ -20,12 +21,15 @@ def register():
     email = request.form["email"]
     password = request.form["password"]
     dname = request.form["dname"]
-
+    
     try:
         user = auth.create_user(email=email, password=password, display_name=dname)
-    except Exception as e:
-        res = make_response(jsonify({"status": "error", "message": str(e)}, 400))
-        return res
+    except ValueError as e:
+        res = make_response(jsonify({'status': 'error', 'message': str(e)}, 400))
+        return res, 400
+    except FirebaseError as e:
+        res = make_response(jsonify({'status': 'error', 'message': str(e)}, 400))
+        return res, 400
 
     ref = db.reference("/Users")
 
@@ -34,5 +38,5 @@ def register():
         "email": email
     })
 
-    res = make_response(jsonify({"status": "success"}, 200))
+    res = make_response(jsonify({'status': 'success'}, 200))
     return res

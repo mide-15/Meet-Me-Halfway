@@ -20,19 +20,16 @@ const RegistrationPage = () => {
       data.append("email", email)
       data.append("password", password)
 
-      // call flask api
-      const response = await fetch('/register', {
-        method: 'POST',
-        body: data
-      })
+      const response = await fetch('/register', {method: 'POST', body: data})
 
-      // FIXME
-      /*if (response.ok) {
-        // Handle success
-        // setShouldRedirect(true);
-      } else {
-        // Handle error
-      }*/
+      if (response.ok) {
+        setShouldRedirect(true)
+      }
+
+      else {
+        const info = await response.json();
+        alert(JSON.stringify(info));
+      }
     } catch (error) {
       alert(error)
     }
