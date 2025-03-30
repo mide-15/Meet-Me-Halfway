@@ -7,12 +7,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebas
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-// Initialize Firebase
-/*const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);*/
-import { auth } from '../../firebase';
-
 // Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
@@ -25,7 +19,10 @@ const firebaseConfig = {
   measurementId: "G-5BL66VCECJ"
 };
 
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
 
 const Login = () => {
   const [email, setEmail] = useState("");
