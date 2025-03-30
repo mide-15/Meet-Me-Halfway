@@ -1,0 +1,83 @@
+/* Container styling */
+#content_container {
+    background-image: url("https://maps.googleapis.com/maps/api/staticmap?center=Denton,TX&zoom=13&size=1280x720&key=AIzaSyDMjLMR0jmAj2EkAaUE6ZDXWFKKephbUoo");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    font-family: 'Inter', Helvetica, sans-serif;
+  }
+  
+  #form_container {
+    background-color: #ffffff;
+    border: 1px solid #031749;
+    border-radius: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 480px;
+    padding: 48px 32px;
+    box-sizing: border-box;
+  }
+  
+  /* Header */
+  #form_header_container {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  
+  #form_header {
+    font-size: 36px;
+    color: #031749;
+    font-weight: 700;
+  }
+  
+  #login_logo {
+    width: 80px; /* or change as needed */
+    height: auto;
+    margin-bottom: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Inputs */
+  #form_content_inner_container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #031749;
+    border-radius: 8px;
+    color: #082367;
+    background-color: #ffffff;
+    box-sizing: border-box;
+  }
+  
+  /* Submit button */
+  #button_container {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  
+  #submit {
+    background-color: #031749;
+    color: #ffffff;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 500px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #submit:hover {
+    background-color: #06205c;
+  }
+  
