@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet";
 import Header from "../../components/Header";
 import ProfileSettingSection from "./ProfileSettingSection";
+import { Button } from "@/components/ui/button"; // Ensure correct path
 import React from "react";
 
 export default function ProfilesettingPage() {
@@ -14,13 +15,13 @@ export default function ProfilesettingPage() {
         />
       </Helmet>
       <div className="flex w-full flex-col gap-2 bg-gray-50">
-        <header className="flex h-[104px] items-center justify-end rounded-t1-[10px] rounded-tr-[10px] bg-[url(/public/images/img_group_56.png)] bg-cover bg-no-repeat px-[34px] py-5 md:h-auto sm:px-5"> 
+        <header className="flex h-[104px] items-center justify-end rounded-tl-[10px] rounded-tr-[10px] bg-[url(/public/images/img_group_56.png)] bg-cover bg-no-repeat px-[34px] py-5 md:h-auto sm:px-5"> 
           <Button shape="square" className="min-w-[168px] self-end px-[34px] sm:px-5">
             Edit
           </Button>
         </header>
         
-        {/* profile setting section *,
+        {/* Profile setting section */}
         <ProfileSettingSection />
       </div>
     </>
