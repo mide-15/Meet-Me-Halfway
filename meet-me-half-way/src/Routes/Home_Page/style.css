@@ -37,7 +37,15 @@
 }
 
 /* Navbar */
-.home-page .navbar-breakpoint {
+.home-page .her.hero-box video.placeholder-lightbox {
+  width: 100%;         /* use the full width of the box */
+  max-height: 250px;   /* adjust as needed */
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;  /* matches your hero-box style */
+  margin-bottom: 15px;
+}
+.navbar-breakpoint {
   align-items: center;
   background-color: #ffffff;
   display: flex;
@@ -48,14 +56,14 @@
 }
 
 /* Video section */
-.home-page .placeholder-lightbox {
-  width: 110px;         /* Adjust this width as needed */
-  height: auto;
+.hero-box video.placeholder-lightbox {
+  width: 20%;           /* Adjust percentage to resize video smaller */
+  height: auto;         /* Maintains the video dimensions without distortion */
   display: block;
-  margin: 0 auto 10px;   /* Centers the video and gives a small margin below */
-  border-radius: 4px;    /* Optional: if you want rounded corners */
-  object-fit: cover;
+  margin: 0 auto 15px;
+  border-radius: 8px;
 }
+
 
 
 .home-page .img-2 {
