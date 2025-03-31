@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './Components/Navbar';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
         >
           Learn React
         </a>
+        <Navbar />
       </header>
     </div>
   );
