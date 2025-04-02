@@ -9,7 +9,7 @@ const Navbar = () => {
           muted
           playsInline
           className="placeholder-lightbox"
-          style={{ width: '100px', height: 'auto' }}
+          style={{ width: '50px', height: 'auto' }}
         />
       </a>
       <button
