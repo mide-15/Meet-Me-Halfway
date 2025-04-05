@@ -21,7 +21,6 @@ body, html {
   background-repeat: no-repeat;
   display: flex;
   justify-content: center;
-  width: 100%;
   min-height: 100vh;
 }
 
@@ -38,7 +37,7 @@ body, html {
 .registration-page .overlap-group {
   position: relative;
   width: 100%;
-  padding-top: 100px;
+  padding-top: 40px;
 }
 
 .registration-page .frame {
@@ -57,26 +56,57 @@ body, html {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 40px;
   padding: 64px;
   position: relative;
   width: 100%;
 }
 
-.registration-page .container-2 {
+.registration-page .form-carousel-wrapper {
   display: flex;
+  flex-direction: row;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   gap: 60px;
+  flex-wrap: wrap;
   width: 100%;
 }
 
-.registration-page .frame-2 {
+.registration-page .frame-2,
+.registration-page .carousel-container {
+  flex: 1;
+  min-width: 300px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  gap: 60px;
-  padding: 40px 0;
+  justify-content: space-between;
+}
+
+.registration-page .carousel-container {
+  align-items: center;
+  margin-top: 8px;
+}
+
+.registration-page .carousel-slide {
+  width: 100%;
+  margin-top: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.registration-page .carousel-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.registration-page .carousel-container .heading {
+  margin-top: 0;
+  padding-top: 0;
+  text-align: center;
 }
 
 .registration-page .div-2 {
@@ -102,7 +132,7 @@ body, html {
 .registration-page .frame-3 {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 24px;
   width: 100%;
 }
 
@@ -211,31 +241,9 @@ body, html {
   cursor: pointer;
 }
 
-.registration-page .group-wrapper {
-  width: 640px;
-}
-
-.registration-page .group {
-  height: auto;
-}
-
-.registration-page .frame-6 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  height: auto;
-}
-
-.registration-page .two-word-query-for {
-  width: 100%;
-  object-fit: cover;
-}
-
-.registration-page .frame-7 {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+.registration-page .img-2 {
+  width: 24px;
+  height: 24px;
 }
 
 .registration-page .slider-dots {
@@ -244,166 +252,33 @@ body, html {
   padding: 10px;
 }
 
-.registration-page .dot,
-.registration-page .dot-2 {
+.slider-dots .dot,
+.slider-dots .dot-2 {
+  transition: background-color 0.3s ease;
   width: 8px;
   height: 8px;
   border-radius: 4px;
 }
 
-.registration-page .dot {
+.slider-dots .dot {
   background-color: #031749;
 }
 
-.registration-page .dot-2 {
+.slider-dots .dot-2 {
   background-color: #ced6eb;
 }
 
-.registration-page .footer-breakpoint {
-  background-color: #051232;
-  padding: 80px 64px;
+.slider-dots .dot:hover,
+.slider-dots .dot-2:hover {
+  background-color: #082367;
+  cursor: pointer;
+}
+
+.carousel-slide iframe {
   width: 100%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 80px;
-}
-
-.registration-page .content-2 {
-  display: flex;
-  gap: 64px;
-  width: 100%;
-}
-
-.registration-page .column-3 {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 864px;
-}
-
-.registration-page .content-3,
-.registration-page .content-4 {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-}
-
-.registration-page .text-wrapper-4,
-.registration-page .p {
-  color: #dbdbdb;
-  font-size: 14px;
-}
-
-.registration-page .text-wrapper-5,
-.registration-page .text-wrapper-6 {
-  color: #dbdbdb;
-  font-size: 14px;
-  text-decoration: underline;
-}
-
-.registration-page .container-4 {
-  display: flex;
-  gap: 80px;
-  width: 100%;
-}
-
-.registration-page .row-wrapper,
-.registration-page .row {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.registration-page .heading-2 {
-  color: #dbdbdb;
-  font-size: 40px;
-  font-weight: 700;
-}
-
-.registration-page .text {
-  color: #dbdbdb;
-  font-size: 18px;
-}
-
-.registration-page .actions-2 {
-  display: flex;
-  gap: 16px;
-}
-
-.registration-page .button-6,
-.registration-page .button-7 {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 32px;
-  border-radius: 500px;
-}
-
-.registration-page .button-6 {
-  background-color: #dbdbdb;
-  border: 1px solid #dbdbdb;
-}
-
-.registration-page .button-7 {
-  border: 1px solid #dbdbdb;
-  background: transparent;
-}
-
-.registration-page .button-3,
-.registration-page .button-8 {
-  font-size: 16px;
-  color: #dbdbdb;
-  background: none;
-  border: none;
-}
-
-.registration-page .column-4 {
-  display: flex;
-  gap: 24px;
-  overflow: hidden;
-}
-
-.registration-page .link-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1;
-}
-
-.registration-page .text-wrapper-7,
-.registration-page .text-wrapper-8 {
-  color: #dbdbdb;
-  font-size: 16px;
-}
-
-.registration-page .credits {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 100%;
-}
-
-.registration-page .divider {
-  height: 1px;
-  background-color: #031749;
-  width: 100%;
-}
-
-.registration-page .row-2 {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.registration-page .element-company-all,
-.registration-page .text-wrapper-9 {
-  font-size: 14px;
-  color: #031749;
-}
-
-.registration-page .footer-links {
-  display: flex;
-  gap: 24px;
+  max-width: 100%;
+  height: 450px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
 }
