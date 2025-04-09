@@ -12,40 +12,49 @@ const variants = {
 };
 
 const sizes = {
-  xs: "h-[52px] px-8 text-[16px]”,
+  xs: "h-[52px] px-8 text-[16px]",
 };
 
 const Input = React.forwardRef(
   (
     {
       className = "",
-      name="",
-      placeholder= "",
-      type="text",
+      name = "",
+      placeholder = "",
+      type = "text",
       label = "",
       prefix,
       suffix,
       onChange,
       shape,
-      variant="fill",
+      variant = "fill",
       size = "xs",
-      color="gray_50",
+      color = "gray_50",
       ...restProps
     },
-    ref, 
+    ref
   ) => {
-    return ( 
+    return (
       <label
-        className={${className} flex items-center justify-center sm: px-5 cursor-text text-black-900_66 text-[16px] bg-gray-50 rounded-1g ${shape && shapes [shape]} ${variant && (variants[variant]?. [color] || variants[variant])} ${size && sizes[size]}}
+        className={`${className} flex items-center justify-center sm:px-5 cursor-text text-black-900_66 ${shape && shapes[shape]} ${variant && (variants[variant]?.[color] || variants[variant])} ${size && sizes[size]}`}
       >
         {!!label && label}
-        {!!prefix && prefix)
-        <input ref={ref} type={type} name={name} placeholder={placeholder} onChange={onChange} {...restProps} />
+        {!!prefix && prefix}
+        <input
+          ref={ref}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          onChange={onChange}
+          className="bg-transparent outline-none w-full"
+          {...restProps}
+        />
         {!!suffix && suffix}
       </label>
     );
-  },
+  }
 );
+
 Input.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string,
@@ -56,8 +65,8 @@ Input.propTypes = {
   suffix: PropTypes.node,
   shape: PropTypes.oneOf(["round"]),
   size: PropTypes.oneOf(["xs"]),
-  variant: PropTypes.oneOf(["111"]),
-  color: PropTypes.oneOf(["gray_58"]),
+  variant: PropTypes.oneOf(["fill"]),
+  color: PropTypes.oneOf(["gray_50"]),
 };
-        
+
 export { Input };
