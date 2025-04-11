@@ -16,11 +16,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "meet-me-half-way/api/index.py"
+      "dest": "/meet-me-half-way/api/index.py"
     },
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/meet-me-half-way/public/index.html"
     }
   ]
 }
