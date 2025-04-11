@@ -1,6 +1,26 @@
 {
-    "rewrites": [
-      { "source": "/api/(.*)", "destination": "/meet-me-half-way/flask_backend/api.py" },
-      { "source": "/(.*)", "destination": "/meet-me-half-way/public/index.html" }
-    ]
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "meet-me-half-way/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
