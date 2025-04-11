@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/meet-me-half-way/api/index.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/meet-me-half-way/public/index.html"
+    }
+  ]
+}
