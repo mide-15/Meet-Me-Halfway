@@ -1,6 +1,6 @@
 {
     "rewrites": [
-      { "source": "/api/(.*)", "destination": "/flask_backend/api.py" },
-      { "source": "/(.*)", "destination": "/public/index.html" }
+      { "source": "/api/(.*)", "destination": "/meet-me-half-way/flask_backend/api.py" },
+      { "source": "/(.*)", "destination": "/meet-me-half-way/public/index.html" }
     ]
   }
