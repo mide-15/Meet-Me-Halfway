@@ -10,13 +10,8 @@ firebase_admin.initialize_app(cred, {"databaseURL" : "https://meet-me-halfway-54
 
 app = Flask(__name__)
 
-
-@app.route("/time")
-def get_current_time():
-    return {"time": time.time()}
-
 # Register a new user and add them to the database
-@app.route("/register", methods = ["POST", "GET"])
+@app.route("/api/register", methods = ["POST", "GET"])
 def register():
     email = request.form["email"]
     password = request.form["password"]

@@ -18,7 +18,7 @@ const RegistrationPage = () => {
       data.append("email", email);
       data.append("password", password);
 
-      const response = await fetch('/register', {method: 'POST', body: data})
+      const response = await fetch('/api/register', {method: 'POST', body: data})
 
       if (response.ok) {
         setShouldRedirect(true)
