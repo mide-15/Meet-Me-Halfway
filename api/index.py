@@ -13,6 +13,8 @@ app = Flask(__name__)
 # Register a new user and add them to the database
 @app.route("/api/register", methods = ["POST", "GET"])
 def register():
+    res = make_response(jsonify({'status': 'error', 'message': 'huzzah'}, 400))
+    return res, 400
     email = request.form["email"]
     password = request.form["password"]
     dname = request.form["dname"]
