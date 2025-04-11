@@ -6,7 +6,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/"
     }
   ]
 }
