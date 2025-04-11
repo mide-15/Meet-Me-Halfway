@@ -25,9 +25,9 @@ const RegistrationPage = () => {
       }
 
       else {
-        const info = await response.json();
+        //const info = await response.json();
         alert(response);
-        alert(JSON.stringify(info));
+        //alert(JSON.stringify(info));
       }
     } catch (error) {
       alert(error);
