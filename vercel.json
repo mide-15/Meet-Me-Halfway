@@ -6,7 +6,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/meet-me-half-way/public/index.html"
+      "dest": "/public/index.html"
     }
   ]
 }
