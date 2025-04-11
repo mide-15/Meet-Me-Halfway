@@ -13,8 +13,6 @@ app = Flask(__name__)
 # Register a new user and add them to the database
 @app.route("/api/register", methods = ["POST", "GET"])
 def register():
-    res = make_response(jsonify({'status': 'error', 'message': 'huzzah'}, 400))
-    return res, 400
     email = request.form["email"]
     password = request.form["password"]
     dname = request.form["dname"]
@@ -37,3 +35,9 @@ def register():
 
     res = make_response(jsonify({'status': 'success'}, 200))
     return res
+
+# This is crucial - Flask needs to be wrapped for serverless
+@app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+@app.route('/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
+def catch_all(path):
+    return jsonify({"message": "Endpoint not found"}), 404
