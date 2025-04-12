@@ -1,16 +1,10 @@
 from http.server import BaseHTTPRequestHandler
-import json
-
-def handler(request):
-    # Simple dictionary to return as JSON
-    data = {"message": "Hello from Python API!"}
-    
-    # Return response with headers
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
-        },
-        "body": json.dumps(data)
-    }
+ 
+class handler(BaseHTTPRequestHandler):
+ 
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type','text/plain')
+        self.end_headers()
+        self.wfile.write('Hello, world!'.encode('utf-8'))
+        return
