@@ -53,15 +53,6 @@ class handler(BaseHTTPRequestHandler):
                 password = form_data.get('password', '')
                 dname = form_data.get('dname', '')
 
-                self.send_response(400)
-                self.send_header('Content-type', 'application/json')
-                self.send_header('Access-Control-Allow-Origin', '*')
-                self.end_headers()
-                self.wfile.write(json.dumps({
-                    'status': 'dname',
-                    'message': dname
-                }).encode())
-
             try:
                 # Create the user in Firebase Auth
                 user = auth.create_user(email=email, password=password, display_name=dname)
