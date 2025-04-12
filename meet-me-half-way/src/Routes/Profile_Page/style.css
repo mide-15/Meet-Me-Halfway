@@ -1,0 +1,110 @@
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("/fonts/SchibstedGroteskRegular.ttf") format("truetype");
+  font-family: "Schibsted Grotesk";
+  font-weight: 400;
+}
+
+@font-face {
+  font-display: swap;
+  font-style: normal;
+  src: url("/fonts/PoppinsRegular.ttf") format("truetype");
+  font-family: "Poppins";
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  line-height: normal;
+  font-family: inherit;
+  margin: 0;
+}
+
+input {
+  background-color: transparent;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ------Color variables ------*/
+    --black_900: #000000;
+    --black_900_66: #00000066;
+    --black_900_cc: #000000cc;
+    --cyan_300: #3bcee8;
+    --gray_50: #f9f9f9;
+    --gray_900: #1e1e1e;
+    --white_a700: #ffffff;
+    
+    /* ------Border radius variables------*/
+    --radius-xs: 8px;
+    --radius-sm: 10px;
+    
+    /*------Spacing variables------*/
+    --space-xs: 6px;
+    --space-sm: 8px;
+    --space-md: 14px;
+    --space-lg: 20px;
+  }
+
+  [type="text"],
+  input:where(:not([type])),
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    appearance: none;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: 0;
+    border-radius: 0;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  /* Override default focus colors for tailwindcss-forms */
+  [type="text"]:focus,
+  [type="email"]:focus,
+  [type="url"]:focus,
+  [type="password"]:focus,
+  [type="number"]:focus,
+  [type="date"]:focus,
+  [type="search"]:focus,
+  [multiple]:focus,
+  textarea:focus,
+  select:focus {
+    --tw-ring-color: transparent;
+    border-color: transparent;
+  }
+
+  [type="radio"]:focus,
+  [type="checkbox"]:focus {
+    --tw-ring-color: transparent;
+  }
+}
