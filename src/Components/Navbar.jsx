@@ -2,7 +2,10 @@
 
 import React from 'react'
 import { signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { Navigate } from 'react-router-dom'
 import "./NavbarStyle.css";
+
+const [shouldRedirect, setShouldRedirect] = useState(false);
 
 // Call firebase api to delete auth token and set redirect flag
 const handleLogOut = (event) => {
