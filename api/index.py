@@ -28,20 +28,22 @@ class handler(BaseHTTPRequestHandler):
             
             # Parse form data
             form_data = parse_qs(post_data)
+            
+            # Extract form fields (taking first value if multiple are provided)
+            email = form_data.get('email', [''])[0]
+            password = form_data.get('password', [''])[0]
+            dname = form_data.get('dname', [''])[0]
 
             self.send_response(400)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({
-                'item': 'form_data',
-                'message': str(form_data)
+                'item': 'email',
+                'message': str(email),
+                'item': 'dname',
+                'message': str(dname)
             }).encode())
-            
-            # Extract form fields (taking first value if multiple are provided)
-            email = form_data.get('email', [''])[0]
-            password = form_data.get('password', [''])[0]
-            dname = form_data.get('dname', [''])[0]
             
             try:
                 # Create the user in Firebase Auth
