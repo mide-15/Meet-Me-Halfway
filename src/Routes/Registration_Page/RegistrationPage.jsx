@@ -2,6 +2,26 @@ import React, { useState } from "react";
 import "./style.css";
 import Navbar from "../../Components/Navbar";
 import { Navigate } from "react-router-dom";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+// Firebase configuration (this should be an env var)
+const firebaseConfig = {
+  apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
+  authDomain: "meet-me-halfway-5475f.firebaseapp.com",
+  databaseURL: "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com",
+  projectId: "meet-me-halfway-5475f",
+  storageBucket: "meet-me-halfway-5475f.appspot.com",
+  messagingSenderId: "140642671795",
+  appId: "1:140642671795:web:49943cd681cdde8e4364c6",
+  measurementId: "G-5BL66VCECJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
 
 const RegistrationPage = () => {
   const [email, setEmail] = useState("");
@@ -18,10 +38,21 @@ const RegistrationPage = () => {
       data.append("email", email);
       data.append("password", password);
 
-      const response = await fetch('/register', {method: 'POST', body: data})
+      const response = await fetch('/api/register', {method: 'POST', body: data})
 
       if (response.ok) {
-        setShouldRedirect(true)
+        setShouldRedirect(true);
+        event.preventDefault();
+
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            localStorage.setItem("user", JSON.stringify(user));
+            setShouldRedirect(true);
+          })
+          .catch((error) => {
+
+          });
       }
 
       else {
