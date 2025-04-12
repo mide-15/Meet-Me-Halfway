@@ -12,7 +12,7 @@ if not firebase_admin._apps:
     try:
         #cred_path = "meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json"
         cred_dict = json.loads(os.environ.get('API_KEY'))
-        cred = credentials.Certificate(os.environ.get(cred_dict))
+        cred = credentials.Certificate(cred_dict)
         firebase_admin.initialize_app(cred, {
             "databaseURL": "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com/"
         })
