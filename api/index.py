@@ -41,8 +41,6 @@ class handler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps({
                 'item': 'post_data',
                 'message': post_data,
-                'item' : 'form_data',
-                'message': str(form_data),
             }).encode())
             
             try:
