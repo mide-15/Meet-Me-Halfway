@@ -1,10 +1,46 @@
 // Placeholder Navbar component
 
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import { signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { Navigate } from 'react-router-dom'
 import "./NavbarStyle.css";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+// Firebase configuration (this should be an env var)
+const firebaseConfig = {
+  apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
+  authDomain: "meet-me-halfway-5475f.firebaseapp.com",
+  databaseURL: "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com",
+  projectId: "meet-me-halfway-5475f",
+  storageBucket: "meet-me-halfway-5475f.appspot.com",
+  messagingSenderId: "140642671795",
+  appId: "1:140642671795:web:49943cd681cdde8e4364c6",
+  measurementId: "G-5BL66VCECJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
 
 const Navbar = () => {
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
+  // Call firebase api to delete auth token and set redirect flag
+  const handleLogOut = (event) => {
+    signOut(auth)
+      .then(() => {
+        // clear storage and set flag
+        localStorage.clear();
+        setShouldRedirect(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
     <nav class="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "#031749" }}>
       <a class="navbar-brand" href="#">Logo</a>
@@ -34,11 +70,12 @@ const Navbar = () => {
             <a class="dropdown-item" href="#">Account</a>
             <a class="dropdown-item" href="#">Another action</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" type="submit" onClick={handleLogOut}>Sign Out</a>
             </div>
         </li>
         </ul>
       </div>
+      {shouldRedirect && <Navigate to="/" />}
       </nav>
   )
 }
