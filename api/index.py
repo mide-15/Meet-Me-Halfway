@@ -10,7 +10,6 @@ from urllib.parse import parse_qs
 # This prevents re-initialization on every request
 if not firebase_admin._apps:
     try:
-        #cred_path = "meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json"
         cred_dict = json.loads(os.environ.get('API_KEY'))
         cred = credentials.Certificate(cred_dict)
         firebase_admin.initialize_app(cred, {
@@ -31,9 +30,9 @@ class handler(BaseHTTPRequestHandler):
             form_data = parse_qs(post_data)
             
             # Extract form fields (taking first value if multiple are provided)
-            email = form_data.get('email', [''])[0]
-            password = form_data.get('password', [''])[0]
-            dname = form_data.get('dname', [''])[0]
+            email = form_data.get('email', [''])
+            password = form_data.get('password', [''])
+            dname = form_data.get('dname', [''])
             
             try:
                 # Create the user in Firebase Auth
