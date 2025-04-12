@@ -4,7 +4,7 @@ import os
 import firebase_admin
 from firebase_admin import credentials, db, auth
 from firebase_admin.exceptions import FirebaseError
-from urllib.parse import parse_qs
+import re
 
 # Initialize Firebase only once when the serverless function is loaded
 # This prevents re-initialization on every request
@@ -22,27 +22,46 @@ class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         # Check if the path is our registration endpoint
         if self.path == "/api/register":
-            # Get content length to read the request body
-            content_length = int(self.headers['Content-Length'])
-            post_data = self.rfile.read(content_length).decode('utf-8')
-            
-            # Parse form data
-            form_data = parse_qs(post_data)
-            
-            # Extract form fields (taking first value if multiple are provided)
-            email = form_data.get('email', [''])[0]
-            password = form_data.get('password', [''])[0]
-            dname = form_data.get('dname', [''])[0]
+            content_type = self.headers.get('Content-Type', '')
 
-            self.send_response(400)
-            self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps({
-                'item': 'post_data',
-                'message': post_data,
-            }).encode())
-            
+            if 'multipart/form-data' in content_type:
+                # Get the boundary
+                boundary = content_type.split('=')[1].strip()
+                
+                # Read the content
+                content_length = int(self.headers['Content-Length'])
+                post_data = self.rfile.read(content_length).decode('utf-8')
+                
+                # Parse multipart form data
+                form_data = {}
+                parts = post_data.split('--' + boundary)
+                
+                for part in parts:
+                    # Skip empty parts and the final boundary
+                    if not part or part.strip() == '--':
+                        continue
+                    
+                    # Extract field name and value
+                    match = re.search(r'name=\"([^\"]+)\"\r\n\r\n(.*?)(?:\r\n--|\Z)', part, re.DOTALL)
+                    if match:
+                        field_name = match.group(1)
+                        field_value = match.group(2).strip()
+                        form_data[field_name] = field_value
+                
+                # Extract form values
+                email = form_data.get('email', '')
+                password = form_data.get('password', '')
+                dname = form_data.get('dname', '')
+
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    'status': 'dname',
+                    'message': dname
+                }).encode())
+
             try:
                 # Create the user in Firebase Auth
                 user = auth.create_user(email=email, password=password, display_name=dname)
