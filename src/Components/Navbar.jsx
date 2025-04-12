@@ -1,9 +1,30 @@
 // Placeholder Navbar component
 
-import React from 'react'
+import React, { useState } from "react";
 import { signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { Navigate } from 'react-router-dom'
 import "./NavbarStyle.css";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+// Firebase configuration (this should be an env var)
+const firebaseConfig = {
+  apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
+  authDomain: "meet-me-halfway-5475f.firebaseapp.com",
+  databaseURL: "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com",
+  projectId: "meet-me-halfway-5475f",
+  storageBucket: "meet-me-halfway-5475f.appspot.com",
+  messagingSenderId: "140642671795",
+  appId: "1:140642671795:web:49943cd681cdde8e4364c6",
+  measurementId: "G-5BL66VCECJ"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+
 
 const [shouldRedirect, setShouldRedirect] = useState(false);
 
