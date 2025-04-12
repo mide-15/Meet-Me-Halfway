@@ -75,7 +75,7 @@ const Navbar = () => {
         </li>
         </ul>
       </div>
-      {shouldRedirect && <Navigate to="/login" />}
+      {shouldRedirect && <Navigate to="/" />}
       </nav>
   )
 }
