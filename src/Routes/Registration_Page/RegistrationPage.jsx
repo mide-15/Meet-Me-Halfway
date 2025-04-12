@@ -21,7 +21,21 @@ const RegistrationPage = () => {
       const response = await fetch('/api/register', {method: 'POST', body: data})
 
       if (response.ok) {
-        setShouldRedirect(true)
+        setShouldRedirect(true);
+        event.preventDefault();
+        setLoading(true);
+        setErrorMessage("");
+    
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            localStorage.setItem("user", JSON.stringify(user));
+            setShouldRedirect(true);
+          })
+          .catch((error) => {
+            setErrorMessage(error.message);
+            setLoading(false);
+          });
       }
 
       else {

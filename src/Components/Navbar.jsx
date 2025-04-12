@@ -1,8 +1,21 @@
 // Placeholder Navbar component
 
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import "./NavbarStyle.css";
+
+// Call firebase api to delete auth token and set redirect flag
+const handleLogOut = (event) => {
+  signOut(auth)
+    .then(() => {
+      // clear storage and set flag
+      localStorage.clear();
+      setShouldRedirect(true);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
 const Navbar = () => {
   return (
@@ -34,11 +47,12 @@ const Navbar = () => {
             <a class="dropdown-item" href="#">Account</a>
             <a class="dropdown-item" href="#">Another action</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" type="submit" onClick={handleLogOut}>Sign Out</a>
             </div>
         </li>
         </ul>
       </div>
+      {shouldRedirect && <Navigate to="/login" />}
       </nav>
   )
 }
