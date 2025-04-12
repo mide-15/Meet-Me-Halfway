@@ -13,8 +13,8 @@ if not firebase_admin._apps:
         # Using environment variables is recommended for secrets in production
         # You'll need to add this JSON file to your Vercel project or use environment variables
         #cred_path = "meet-me-halfway-5475f-firebase-adminsdk-cg006-4403413b2a.json"
-        cred_path = os.environ.get("API_KEY")
-        cred = credentials.Certificate(cred_path)
+        # cred_path = os.environ.get("API_KEY")
+        cred = credentials.Certificate(os.environ.get("API_KEY"))
         firebase_admin.initialize_app(cred, {
             "databaseURL": "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com/"
         })
