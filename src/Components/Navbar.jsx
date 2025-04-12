@@ -25,23 +25,22 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
 
+const Navbar = () => {
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-const [shouldRedirect, setShouldRedirect] = useState(false);
-
-// Call firebase api to delete auth token and set redirect flag
-const handleLogOut = (event) => {
-  signOut(auth)
-    .then(() => {
-      // clear storage and set flag
-      localStorage.clear();
-      setShouldRedirect(true);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  // Call firebase api to delete auth token and set redirect flag
+  const handleLogOut = (event) => {
+    signOut(auth)
+      .then(() => {
+        // clear storage and set flag
+        localStorage.clear();
+        setShouldRedirect(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-const Navbar = () => {
   return (
     <nav class="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "#031749" }}>
       <a class="navbar-brand" href="#">Logo</a>
