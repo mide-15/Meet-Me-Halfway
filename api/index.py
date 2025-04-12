@@ -39,8 +39,8 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({
-                'item': 'email',
-                'message': email,
+                'item': 'post_data',
+                'message': post_data,
             }).encode())
             
             try:
