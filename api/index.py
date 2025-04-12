@@ -40,13 +40,13 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(json.dumps({
                 'item': 'post_data',
-                'message': str(post_data),
+                'message': post_data,
                 'item' : 'form_data',
                 'message': str(form_data),
                 'item': 'email',
-                'message': str(email),
+                'message': email,
                 'item': 'dname',
-                'message': str(dname)
+                'message': dname
             }).encode())
             
             try:
