@@ -39,6 +39,10 @@ class handler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(json.dumps({
+                'item': 'post_data',
+                'message': str(post_data),
+                'item' : 'form_data',
+                'message': str(form_data),
                 'item': 'email',
                 'message': str(email),
                 'item': 'dname',
