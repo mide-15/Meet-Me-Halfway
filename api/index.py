@@ -43,10 +43,6 @@ class handler(BaseHTTPRequestHandler):
                 'message': post_data,
                 'item' : 'form_data',
                 'message': str(form_data),
-                'item': 'email',
-                'message': email,
-                'item': 'dname',
-                'message': dname
             }).encode())
             
             try:
