@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import Navbar from "../../Components/Navbar";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-// Firebase configuration (this should be an env var)
 const firebaseConfig = {
   apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
   authDomain: "meet-me-halfway-5475f.firebaseapp.com",
@@ -18,7 +17,6 @@ const firebaseConfig = {
   measurementId: "G-5BL66VCECJ"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
@@ -28,22 +26,36 @@ const RegistrationPage = () => {
   const [password, setPassword] = useState("");
   const [dname, setDname] = useState("");
   const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const goToPrevious = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? 2 : prevIndex - 1));
+  };
+
+  const goToNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 2 ? 0 : prevIndex + 1));
+  };
+
+  useEffect(() => {
+    const interval = setInterval(goToNext, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      // Construct form data
       const data = new FormData();
       data.append("dname", dname);
       data.append("email", email);
       data.append("password", password);
 
-      const response = await fetch('/api/register', {method: 'POST', body: data})
+      const response = await fetch("/api/register", {
+        method: "POST",
+        body: data,
+      });
 
       if (response.ok) {
-        setShouldRedirect(true);
-        event.preventDefault();
-
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
@@ -51,16 +63,14 @@ const RegistrationPage = () => {
             setShouldRedirect(true);
           })
           .catch((error) => {
-
+            alert("Authentication failed: " + error.message);
           });
-      }
-
-      else {
-        const info = await response.json();
-        alert(JSON.stringify(info));
+      } else {
+        const error = await response.json();
+        alert(error.message || "Registration failed.");
       }
     } catch (error) {
-      alert(error);
+      alert("An error occurred: " + error.message);
     }
   };
 
@@ -72,7 +82,7 @@ const RegistrationPage = () => {
           <div className="frame">
             <div className="signup-property-wrapper">
               <div className="signup-property">
-                <div className="container-2">
+                <div className="form-carousel-wrapper">
                   <div className="frame-2">
                     <div className="div-2">
                       <img
@@ -120,7 +130,7 @@ const RegistrationPage = () => {
                             </div>
                             <img
                               className="img"
-                              alt="Icon show"
+                              alt="Show"
                               src="https://c.animaapp.com/qsNvXK1b/img/icon---show.svg"
                             />
                           </div>
@@ -128,7 +138,7 @@ const RegistrationPage = () => {
                           <div className="agreement">
                             <img
                               className="img"
-                              alt="Icon checkbox"
+                              alt="Checkbox"
                               src="https://c.animaapp.com/qsNvXK1b/img/icon---checkbox.svg"
                             />
                             <p className="by-clicking-sign-up">
@@ -139,12 +149,7 @@ const RegistrationPage = () => {
                         </div>
 
                         <div className="div-2">
-                          {/* Single Sign Up button */}
-                          <button
-                            className="div-wrapper"
-                            id="submit"
-                            type="submit"
-                          >
+                          <button className="div-wrapper" id="submit" type="submit">
                             Sign Up
                           </button>
 
@@ -162,7 +167,11 @@ const RegistrationPage = () => {
                             />
                           </div>
 
-                          <button className="button-5" type="button">
+                          <button
+                            className="button-5"
+                            type="button"
+                            onClick={() => navigate("/login")}
+                          >
                             Login
                           </button>
                         </div>
@@ -170,96 +179,72 @@ const RegistrationPage = () => {
                     </form>
                   </div>
 
-                  <div className="group-wrapper">
-                    <div className="group">
-                      <div className="frame-6">
-                        <img
-                          className="two-word-query-for"
-                          alt="Two word query for"
-                          src="https://c.animaapp.com/qsNvXK1b/img/two-word-query-for-image-based-on-the-main-keywords-in-the-promp.png"
+                  <div className="carousel-container">
+                    <h3 className="sub-heading">Explore Meet Points</h3>
+                    <div className="carousel-slide">
+                      {[
+                        <iframe
+                          key="map1"
+                          title="Denton Location Map"
+                          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d24219.19191684946!2d-97.15876599366678!3d33.22383918705614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1743654362799!5m2!1sen!2sus"
+                          width="100%"
+                          height="400"
+                          style={{ border: 0 }}
+                          allowFullScreen=""
+                          loading="lazy"
+                        />, <iframe
+                          key="map2"
+                          title="Lewisville Location Map"
+                          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d58043.724101793836!2d-97.01643329269521!3d33.11192778873516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1743654429746!5m2!1sen!2sus"
+                          width="100%"
+                          height="400"
+                          style={{ border: 0 }}
+                          allowFullScreen=""
+                          loading="lazy"
+                        />, <iframe
+                          key="map3"
+                          title="Carrollton Location Map"
+                          src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d72414.31892785156!2d-97.04238429254256!3d32.94005389064968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1743654468067!5m2!1sen!2sus"
+                          width="100%"
+                          height="400"
+                          style={{ border: 0 }}
+                          allowFullScreen=""
+                          loading="lazy"
                         />
-                        <div className="frame-7">
-                          <img
-                            className="img-2"
-                            alt="Button"
-                            src="https://c.animaapp.com/qsNvXK1b/img/button.svg"
+                      ][currentIndex]}
+                    </div>
+
+                    <div className="carousel-controls">
+                      <img
+                        className="img-2"
+                        alt="Prev"
+                        src="https://c.animaapp.com/qsNvXK1b/img/button.svg"
+                        onClick={goToPrevious}
+                      />
+                      <div className="slider-dots">
+                        {[0, 1, 2].map((idx) => (
+                          <div
+                            key={idx}
+                            className={idx === currentIndex ? "dot" : "dot-2"}
+                            onClick={() => setCurrentIndex(idx)}
                           />
-                          <div className="slider-dots">
-                            <div className="dot" />
-                            <div className="dot-2" />
-                          </div>
-                          <img
-                            className="img-2"
-                            alt="Button"
-                            src="https://c.animaapp.com/qsNvXK1b/img/button-1.svg"
-                          />
-                        </div>
+                        ))}
                       </div>
+                      <img
+                        className="img-2"
+                        alt="Next"
+                        src="https://c.animaapp.com/qsNvXK1b/img/button-1.svg"
+                        onClick={goToNext}
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Footer section with extra bottom buttons removed */}
-          <div className="footer-breakpoint">
-            <div className="content-2">
-              <div className="column-3"></div>
-              <img
-                className="img-2"
-                alt="Social links"
-                src="https://c.animaapp.com/qsNvXK1b/img/social-links.svg"
-              />
-            </div>
-
-            <div className="container-4">
-              <div className="row-wrapper">
-                <div className="row">
-                  <div className="heading-2">Meet Me Halfway</div>
-                  <p className="text">
-                    Find the perfect meeting spot with Meet Me Halfway
-                  </p>
-                </div>
-              </div>
-              {/* Removed extra action buttons */}
-            </div>
-
-            <div className="column-4">
-              <div className="link-list">
-                <div className="text-wrapper-7">Home</div>
-                <div className="text-wrapper-8">Google Calendar</div>
-                <div className="text-wrapper-8">Login</div>
-                <div className="text-wrapper-8">Registration</div>
-                <div className="text-wrapper-8">Menu</div>
-              </div>
-
-              <div className="link-list">
-                <div className="text-wrapper-7">Polls</div>
-                <div className="text-wrapper-8">Map</div>
-                <div className="text-wrapper-8">Location Services</div>
-                <div className="text-wrapper-8">Location Filter</div>
-                <div className="text-wrapper-8">Footer</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="credits">
-            <div className="divider" />
-            <div className="row-2">
-              <p className="element-company-all">
-                © 2023 Meet Me Halfway. All rights reserved.
-              </p>
-              <div className="footer-links">
-                <div className="text-wrapper-9">Privacy Policy</div>
-                <div className="text-wrapper-9">Terms of Service</div>
-                <div className="text-wrapper-9">Cookies Settings</div>
-              </div>
-            </div>
-          </div>
         </div>
+        {shouldRedirect && <Navigate to="/dashboard" />}
       </div>
-      {shouldRedirect && <Navigate to="/dashboard" />}
     </div>
   );
 };
