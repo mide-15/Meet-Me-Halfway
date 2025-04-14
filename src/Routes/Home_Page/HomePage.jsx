@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from 'react';
 import "./style.css";
 import Navbar from '../../Components/Navbar';
+import { Navigate } from 'react-router-dom';
 
 const HomePage = () => {
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const handleSubmit = (event) => {
+    setShouldRedirect(true);
+  };
+  
   return (
     <div className="home-page">
       <Navbar />
@@ -36,8 +42,9 @@ const HomePage = () => {
             <button className="div-wrapper">
               <span className="button-3">Get Started</span>
             </button>
+            {shouldRedirect && <Navigate to="/dashboard" />}
           </div>
-          <p className="p">Already have an account? Log in</p>
+          <p className="p">Already have an account? <a href="/login"> Log in </a></p>
         </div>
       </div>
     </div>
