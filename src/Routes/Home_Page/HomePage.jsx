@@ -12,7 +12,7 @@ const HomePage = () => {
           <div className="column-3">
             <div className="hero-box">
               <video
-                src={`${process.env.PUBLIC_URL}/hmlogovid2.mov`}
+                src={`${process.env.PUBLIC_URL}/hmlogovid2.mp4`}
                 autoPlay
                 loop
                 muted
