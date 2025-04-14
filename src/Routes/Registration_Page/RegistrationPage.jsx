@@ -53,6 +53,7 @@ const RegistrationPage = () => {
   const handleChange = (e) => {
     const newValue = e.target.value;
     setInputValue(newValue);
+    setEmail(newValue);
     //localStorage.setItem(email, newValue);
   };
 
