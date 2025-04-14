@@ -39,7 +39,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="/">
         <video
-          src={`${process.env.PUBLIC_URL}/hmlogovid2.mov`}
+          src={`${process.env.PUBLIC_URL}/hmlogovid2.mp4`}
           autoPlay
           loop
           muted
