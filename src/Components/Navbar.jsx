@@ -62,18 +62,6 @@ const Navbar = () => {
 
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
-            <a className="nav-link" href="/">Home</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/login">Login</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/registration">Register</a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/dashboard">Map</a>
-          </li>
           <li className="nav-item dropdown">
             <a
               className="nav-link dropdown-toggle"
@@ -88,7 +76,6 @@ const Navbar = () => {
             </a>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <a className="dropdown-item" href="#">Account</a>
-              <a className="dropdown-item" href="#">Another action</a>
               <div className="dropdown-divider"></div>
               <button className="dropdown-item" onClick={handleLogOut}>Sign Out</button>
             </div>
