@@ -28,6 +28,7 @@ const RegistrationPage = () => {
   const [shouldRedirect, setShouldRedirect] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState('');
 
   const goToPrevious = () => {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? 2 : prevIndex - 1));
@@ -41,6 +42,19 @@ const RegistrationPage = () => {
     const interval = setInterval(goToNext, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const emailInfo = localStorage.getItem("email");
+    if (emailInfo) {
+      setInputValue(emailInfo);
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    //localStorage.setItem(email, newValue);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -113,8 +127,8 @@ const RegistrationPage = () => {
                             placeholder="Enter your email"
                             type="email"
                             id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={handleChange}
+                            value={inputValue}
                           />
 
                           <div className="text-input-2">
