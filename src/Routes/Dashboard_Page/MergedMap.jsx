@@ -89,6 +89,56 @@ const MergedMap = () => {
     setDirectionsResponse(null);
   };
 
+  const handleMarkerClick = (position) => {
+     clearDirectionsOverlays();
+     fetchDirections1(position);
+     fetchDirections2(position);
+   };
+ 
+   const fetchDirections1 = (destination) => {
+     if (!originCoords || !destination) return;
+     
+     const directionsService = new window.google.maps.DirectionsService();
+     directionsService.route(
+       {
+         origin: originCoords,
+         destination: destination,
+         travelMode: window.google.maps.TravelMode[travelMode],
+       },
+       (result, status) => {
+         if (status === window.google.maps.DirectionsStatus.OK) {
+           setDirectionsResponse(result);
+           const steps = result.routes[0].legs[0].steps.map((step) => step.instructions);
+           setDirectionsSteps1(steps);
+         } else {
+           console.error("Error fetching directions:", status);
+         }
+       }
+     );
+   };
+ 
+   const fetchDirections2 = (destination) => {
+     if (!originCoords || !destination) return;
+     
+     const directionsService = new window.google.maps.DirectionsService();
+     directionsService.route(
+       {
+         origin: destinationCoords,
+         destination: destination,
+         travelMode: window.google.maps.TravelMode[travelMode],
+       },
+       (result, status) => {
+         if (status === window.google.maps.DirectionsStatus.OK) {
+           setDirectionsResponse(result);
+           const steps = result.routes[0].legs[0].steps.map((step) => step.instructions);
+           setDirectionsSteps2(steps);
+         } else {
+           console.error("Error fetching directions:", status);
+         }
+       }
+     );
+   };
+
   const fetchDirections = async () => {
     clearDirectionsOverlays();
     setOriginCoords(null);
@@ -204,7 +254,7 @@ const MergedMap = () => {
         {destinationCoords && <Marker position={destinationCoords} />}
         {midpoint && <Marker position={midpoint} icon={customIcon} />}
         {places.map((place, index) => (
-          <Marker key={index} position={place.geometry.location} icon={nearbyPlaceIcon} />
+          <Marker key={index} position={place.geometry.location} icon={nearbyPlaceIcon} onClick={() => handleMarkerClick(place.geometry.location)} icon={nearbyPlaceIcon} />
         ))}
       </GoogleMap>
 
