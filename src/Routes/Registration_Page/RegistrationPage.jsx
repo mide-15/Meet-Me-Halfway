@@ -47,6 +47,7 @@ const RegistrationPage = () => {
     const emailInfo = localStorage.getItem("email");
     if (emailInfo) {
       setInputValue(emailInfo);
+      setEmail(emailInfo);
     }
   }, []);
 
