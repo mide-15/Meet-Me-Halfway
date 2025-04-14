@@ -36,7 +36,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: "#031749" }}>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="/">
         <video
           src={`${process.env.PUBLIC_URL}/hmlogovid2.mov`}
@@ -63,20 +63,20 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <a className="nav-link text-white" href="/">Home</a>
+            <a className="nav-link" href="/">Home</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="/login">Login</a>
+            <a className="nav-link" href="/login">Login</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="/registration">Register</a>
+            <a className="nav-link" href="/registration">Register</a>
           </li>
           <li className="nav-item">
-            <a className="nav-link text-white" href="/dashboard">Map</a>
+            <a className="nav-link" href="/dashboard">Map</a>
           </li>
           <li className="nav-item dropdown">
             <a
-              className="nav-link dropdown-toggle text-white"
+              className="nav-link dropdown-toggle"
               href="#"
               id="navbarDropdown"
               role="button"
