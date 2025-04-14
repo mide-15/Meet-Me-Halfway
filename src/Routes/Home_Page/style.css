@@ -3,7 +3,114 @@
 *::before,
 *::after {
   box-sizing: border-box;
+}/* Global reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  height: 100%;
+  background-color: #f0f2f5;
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Hero Section */
+.header-breakpoint {
+  padding: 64px 16px;
+  flex-grow: 1;
+  background-image: url("https://maps.googleapis.com/maps/api/staticmap?center=Denton,TX&zoom=14&size=1280x720&key=AIzaSyDMjLMR0jmAj2EkAaUE6ZDXWFKKephbUoo");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.container-2 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.column-3 {
+  background-color: #ffffff;
+  padding: 48px 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+}
+
+.hero-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.placeholder-lightbox {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.medium-length-hero {
+  font-size: 48px;
+  font-weight: 700;
+  color: #031749;
+}
+
+.text {
+  font-size: 18px;
+  color: #4a4a4a;
+}
+
+.actions-2 {
+  margin-top: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.text-input {
+  padding: 12px;
+  width: 300px;
+  border: 1px solid #031749;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #082367;
+}
+
+.div-wrapper {
+  padding: 12px 32px;
+  border-radius: 500px;
+  background-color: #031749;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+}
+
+.p {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
 
 body, html {
   margin: 0;
