@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from 'react';
 import "./style.css";
 import Navbar from '../../Components/Navbar';
+import { Navigate } from 'react-router-dom';
 
 const HomePage = () => {
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    localStorage.setItem("email", email);
+    setShouldRedirect(true);
+  };
+
   return (
     <div className="home-page">
       <Navbar />
@@ -27,19 +37,23 @@ const HomePage = () => {
                 <p className="text">Sign up today and start finding the perfect meeting spot</p>
               </div>
 
-              <div className="actions-2">
-                <div className="form">
-                  <input
-                    className="text-input"
-                    placeholder="Enter your email"
-                    type="email"
-                  />
-                  <button className="div-wrapper">
-                    <span className="button-3">Get Started</span>
-                  </button>
-                </div>
+              <form onSubmit={handleSubmit}>
+                  <div className="form">
+                    <input
+                      className="text-input"
+                      placeholder="Enter your email"
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <button className="div-wrapper">
+                      <span className="button-3">Get Started</span>
+                    </button>
+                    {shouldRedirect && <Navigate to="/registration" />}
+                  </div>
+                </form>
                 <p className="p">Already have an account? <a href="/login">Log in</a></p>
-              </div>
             </div>
           </div>
         </div>
