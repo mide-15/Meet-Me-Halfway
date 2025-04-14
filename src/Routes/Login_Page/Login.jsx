@@ -102,7 +102,7 @@ const Login = () => {
 
                 <div style={{ marginTop: '10px', textAlign: 'center' }}>
                   <span style={{ fontSize: '14px' }}>Don't have an account? </span>
-                  <Link to="/register" style={{ fontSize: '14px', color: '#031749', textDecoration: 'underline' }}>
+                  <Link to="/registration" style={{ fontSize: '14px', color: '#031749', textDecoration: 'underline' }}>
                     Create one
                   </Link>
                 </div>
