@@ -17,9 +17,9 @@ const firebaseConfig = {
   measurementId: "G-5BL66VCECJ"
 };
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
+//const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
+//const auth = getAuth(app);
 
 const RegistrationPage = () => {
   const [email, setEmail] = useState("");
