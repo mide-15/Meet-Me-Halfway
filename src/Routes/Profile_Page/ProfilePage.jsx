@@ -3,6 +3,7 @@ import { Text } from "../../Components/Text";
 import { Button } from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../Components/Navbar";
+import "./style.css";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
