@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Input } from "../../Components/Input";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { app } from "../../firebase"; // or wherever your firebase app is initialized
+import { app } from "../../firebase";
+import Navbar from "../../Components/Navbar";
 
 const auth = getAuth(app);
 
@@ -83,7 +84,7 @@ const Settings = () => {
       if (contentType && contentType.includes("application/json")) {
         const result = await res.json();
         alert("Profile updated!");
-        navigate("/dashboard"); // or wherever you'd like
+        navigate("/dashboard");
       } else {
         const raw = await res.text();
         console.error("Unexpected non-JSON response:", raw);
@@ -98,36 +99,68 @@ const Settings = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 max-w-md mx-auto space-y-4">
-      <h2 className="text-2xl font-bold">Settings</h2>
+    <div
+      className="registration-page"
+      style={{
+        backgroundImage:
+          "url('https://maps.googleapis.com/maps/api/staticmap?center=Denton,TX&zoom=14&size=1280x720&key=AIzaSyDMjLMR0jmAj2EkAaUE6ZDXWFKKephbUoo')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="div">
+        <Navbar />
+        <div className="overlap-group">
+          <div className="frame">
+            <div className="signup-property-wrapper">
+              <div className="signup-property">
+                <div className="frame-2">
+                  <div className="div-2">
+                    <div className="heading">Update Your Settings</div>
+                    <p className="sub-heading">Keep your profile up to date</p>
+                  </div>
 
-      <Input
-        name="name"
-        placeholder="Name"
-        value={formValues.name}
-        onChange={handleChange}
-      />
-      <Input
-        name="state"
-        placeholder="State"
-        value={formValues.state}
-        onChange={handleChange}
-      />
-      <Input
-        name="city"
-        placeholder="City"
-        value={formValues.city}
-        onChange={handleChange}
-      />
+                  <form
+                    onSubmit={handleSubmit}
+                    className="frame-4 bg-white shadow-xl rounded-2xl p-8 border border-gray-200 max-w-md mx-auto animate-fade-in"
+                  >
+                    <div className="space-y-4">
+                      <Input
+                        name="name"
+                        placeholder="Name"
+                        value={formValues.name}
+                        onChange={handleChange}
+                      />
+                      <Input
+                        name="state"
+                        placeholder="State"
+                        value={formValues.state}
+                        onChange={handleChange}
+                      />
+                      <Input
+                        name="city"
+                        placeholder="City"
+                        value={formValues.city}
+                        onChange={handleChange}
+                      />
 
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-        disabled={loading}
-      >
-        {loading ? "Saving..." : "Save Changes"}
-      </button>
-    </form>
+                      <button
+                        type="submit"
+                        className="div-wrapper bg-[#031749] text-white text-sm font-medium rounded-full py-2 px-6 hover:bg-[#041d60] transition-colors shadow-md w-full"
+                        disabled={loading}
+                      >
+                        {loading ? "Saving..." : "Save Changes"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
