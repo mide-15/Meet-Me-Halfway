@@ -1,135 +1,134 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
-import { Text } from "../../components";
-import { Input } from "../../components/Input";
-import { Button } from "@/components/ui/button";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import {
-  getAuth,
-  updatePassword,
-  updateEmail,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { Input } from "../../Components/Input";
+import { useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import { app } from "../../firebase"; // or wherever your firebase app is initialized
 
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyDs9dukouikGyLKxjQgTnM1s2bMQ5h_ezs",
-  authDomain: "meet-me-halfway-5475f.firebaseapp.com",
-  databaseURL: "https://meet-me-halfway-5475f-default-rtdb.firebaseio.com",
-  projectId: "meet-me-halfway-5475f",
-  storageBucket: "meet-me-halfway-5475f.appspot.com",
-  messagingSenderId: "140642671795",
-  appId: "1:140642671795:web:49943cd681cdde8e4364c6",
-};
-
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export default function ProfilesettingPage() {
-  const [user, setUser] = useState(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [state, setState] = useState("");
-  const [city, setCity] = useState("");
-  const [redirect, setRedirect] = useState(false);
+const Settings = () => {
+  const navigate = useNavigate();
+  const [formValues, setFormValues] = useState({
+    name: "",
+    state: "",
+    city: "",
+  });
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setEmail(currentUser.email || "");
-        setName(currentUser.displayName || "");
+    const fetchUserInfo = async () => {
+      try {
+        const token = await auth.currentUser.getIdToken();
+        const res = await fetch("/api/get-user-info", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        const response = await fetch("/api/get-user-info");
-        const data = await response.json();
-        setState(data.state || "");
-        setCity(data.city || "");
+        if (res.ok) {
+          const data = await res.json();
+          setFormValues((prev) => ({
+            ...prev,
+            ...data,
+          }));
+        } else {
+          console.error("Failed to fetch user info.");
+        }
+      } catch (err) {
+        console.error("Error fetching user info:", err);
       }
-    });
+    };
+
+    fetchUserInfo();
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (newPassword && newPassword !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
-    }
+    setLoading(true);
 
     try {
-      const data = new FormData();
-      data.append("name", name);
-      data.append("email", email);
-      data.append("state", state);
-      data.append("city", city);
+      const token = await auth.currentUser.getIdToken();
 
-      const response = await fetch("/api/update-profile", {
+      const formData = new FormData();
+      formData.append("name", formValues.name);
+      formData.append("state", formValues.state);
+      formData.append("city", formValues.city);
+
+      const res = await fetch("/api/update-profile", {
         method: "POST",
-        body: data,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       });
 
-      if (!response.ok) {
-        const err = await response.json();
-        alert(err.message);
+      const contentType = res.headers.get("content-type");
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Server responded with error:", errorText);
+        alert("Error updating profile: " + errorText);
         return;
       }
 
-      if (user) {
-        if (email !== user.email) await updateEmail(user, email);
-        if (newPassword) await updatePassword(user, newPassword);
+      if (contentType && contentType.includes("application/json")) {
+        const result = await res.json();
+        alert("Profile updated!");
+        navigate("/dashboard"); // or wherever you'd like
+      } else {
+        const raw = await res.text();
+        console.error("Unexpected non-JSON response:", raw);
+        alert("Unexpected response. Check console for details.");
       }
-
-      alert("Profile updated!");
-      setRedirect(true);
     } catch (err) {
-      alert("Error updating profile: " + err.message);
+      console.error("Error updating profile:", err);
+      alert("An error occurred while updating your profile.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (redirect) return <Navigate to="/profile" />;
-
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-4xl mx-auto mt-16 bg-white p-10 rounded-xl shadow-md space-y-6"
-    >
-      <h2 className="text-2xl font-semibold mb-4">Edit Profile</h2>
+    <form onSubmit={handleSubmit} className="p-6 max-w-md mx-auto space-y-4">
+      <h2 className="text-2xl font-bold">Settings</h2>
 
-      <div>
-        <Text>Name</Text>
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
-      </div>
+      <Input
+        name="name"
+        placeholder="Name"
+        value={formValues.name}
+        onChange={handleChange}
+      />
+      <Input
+        name="state"
+        placeholder="State"
+        value={formValues.state}
+        onChange={handleChange}
+      />
+      <Input
+        name="city"
+        placeholder="City"
+        value={formValues.city}
+        onChange={handleChange}
+      />
 
-      <div>
-        <Text>Email</Text>
-        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-      </div>
-
-      <div>
-        <Text>New Password</Text>
-        <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="New Password" />
-      </div>
-
-      <div>
-        <Text>Confirm Password</Text>
-        <Input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
-      </div>
-
-      <div>
-        <Text>State</Text>
-        <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
-      </div>
-
-      <div>
-        <Text>City</Text>
-        <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
-      </div>
-
-      <Button type="submit" className="w-full bg-blue-600 text-white mt-6 py-3 rounded-md">
-        Save Changes
-      </Button>
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+        disabled={loading}
+      >
+        {loading ? "Saving..." : "Save Changes"}
+      </button>
     </form>
   );
-}
+};
+
+export default Settings;
