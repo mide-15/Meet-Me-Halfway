@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Input } from "../../Components/Input";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
-import { app } from "../../firebase"; // or wherever your firebase app is initialized
+import { app } from "../../firebase";
 
 const auth = getAuth(app);
 
@@ -81,9 +81,21 @@ const Settings = () => {
       }
 
       if (contentType && contentType.includes("application/json")) {
-        const result = await res.json();
-        alert("Profile updated!");
-        navigate("/dashboard"); // or wherever you'd like
+      const result = await res.json();
+  
+      // Update localStorage with new values
+      const existingUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const updatedUser = {
+        ...existingUser,
+        displayName: formValues.name || existingUser.displayName,
+        state: formValues.state || existingUser.state,
+        city: formValues.city || existingUser.city,
+      };
+
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      alert("Profile updated!");
+      navigate("/dashboard"); 
       } else {
         const raw = await res.text();
         console.error("Unexpected non-JSON response:", raw);
