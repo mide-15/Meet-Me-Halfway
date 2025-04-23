@@ -1,22 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { Text } from "../../Components/Text";
+import { Button } from "../../Components/Button";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../Components/Navbar";
-import "./style.css"; // Make sure this path is correct
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("Error parsing stored user:", error);
+    const loadUserFromStorage = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error("Error parsing stored user:", error);
+        }
       }
-    }
+    };
+
+    // Load user on initial render
+    loadUserFromStorage();
+
+    // Also listen for localStorage changes from other tabs
+    window.addEventListener("storage", loadUserFromStorage);
+
+    // Clean up
+    return () => {
+      window.removeEventListener("storage", loadUserFromStorage);
+    };
   }, []);
 
   const handleEditClick = () => {
@@ -24,42 +37,24 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-background">
-      <div className="profile-container">
-        <Navbar />
-        <div className="profile-content">
-          <h1 className="profile-heading">Profile Overview</h1>
-          <p className="profile-subheading">Manage your profile information</p>
-          <div className="profile-card">
-            <div className="avatar-wrapper">
-              <img
-                src="https://avatars.githubusercontent.com/u/1?v=4"
-                alt="User avatar"
-                className="avatar"
-              />
-            </div>
-            {user ? (
-              <div className="profile-info">
-                <div>
-                  <label className="label">Name:</label>
-                  <p>{user.displayName || "N/A"}</p>
-                </div>
-                <div>
-                  <label className="label">Email:</label>
-                  <p>{user.email}</p>
-                </div>
-                <button className="edit-button" onClick={handleEditClick}>
-                  Edit Profile
-                </button>
-              </div>
-            ) : (
-              <p className="no-info">No profile information available.</p>
-            )}
-          </div>
+    <div className="flex flex-col items-center justify-center py-20">
+      <Text size="textmd" className="mb-10">
+        Profile
+      </Text>
+      {user ? (
+        <div className="space-y-4 text-center">
+          <Text size="textxs">Name: {user.displayName || "N/A"}</Text>
+          <Text size="textxs">Email: {user.email || "N/A"}</Text>
+          <Text size="textxs">City: {user.city || "N/A"}</Text>
+          <Text size="textxs">State: {user.state || "N/A"}</Text>
+          <Button onClick={handleEditClick}>Edit</Button>
         </div>
-      </div>
+      ) : (
+        <Text size="textxs">No profile information available.</Text>
+      )}
     </div>
   );
 };
 
 export default ProfilePage;
+
