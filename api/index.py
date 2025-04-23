@@ -139,13 +139,19 @@ class handler(BaseHTTPRequestHandler):
             if name:
                 auth.update_user(uid, display_name=name)
 
-            # Update Realtime Database
-            ref = db.reference(f"/Users/{uid}")
-            ref.update({
-                "name": name,
-                "state": state,
-                "city": city
-            })
+            # Build only non-empty updates
+            updates = {}
+            if name:
+                updates["name"] = name
+            if state:
+                updates["state"] = state
+            if city:
+                updates["city"] = city
+
+            # Only call update if there’s something to update
+            if updates:
+                ref = db.reference(f"/Users/{uid}")
+                ref.update(updates)
 
             self._set_headers(200)
             self.wfile.write(json.dumps({'status': 'success', 'message': 'Profile updated'}).encode())
