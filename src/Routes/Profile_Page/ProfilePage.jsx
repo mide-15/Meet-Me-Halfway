@@ -20,7 +20,7 @@ const ProfilePage = () => {
   }, []);
 
   const handleEditClick = () => {
-    navigate("/settings");
+    navigate("/test");
   };
 
   return (
