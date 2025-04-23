@@ -49,7 +49,7 @@ const ProfilePage = () => {
                   <p>{user.email}</p>
                 </div>
                 <button className="edit-button" onClick={handleEditClick}>
-                  Edit Profile
+                  Edit Profiletest
                 </button>
               </div>
             ) : (
