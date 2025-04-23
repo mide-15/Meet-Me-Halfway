@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "../../Components/Input";
 import { useNavigate } from "react-router-dom";
 import { getAuth } from "firebase/auth";
@@ -164,4 +164,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;*/
+export default Settings;
